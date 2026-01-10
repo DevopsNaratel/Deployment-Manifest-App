@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: example-backend-test
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/diwamln/Deployment-Manifest-App/
+    targetRevision: HEAD
+    path: example-backend/dev # <--- Lokasi file deployment kamu
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: 999-testing-apps # <--- Namespace tujuan
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # <--- Biar nggak error "namespace not found" lagi
+      - PrunePropagationPolicy=foreground # Memastikan penghapusan sampai bersih ke akar
+      - PruneLast=true # Menghapus resource lama di akhir proses sinkronisasi

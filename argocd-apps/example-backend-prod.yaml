@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: example-backend-prod
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DevopsNaratel/deployment-manifests.git
+    targetRevision: HEAD
+    path: example-backend/prod # <--- Lokasi file deployment kamu
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: 002-example-app # <--- Namespace tujuan
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # <--- Biar nggak error "namespace not found" lagi

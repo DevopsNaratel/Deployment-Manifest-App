@@ -1,0 +1,64 @@
+# ==========================================
+# 1. BACKEND APPLICATION: 002-example-backend
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 002-example-backend
+  namespace: 999-testing-apps
+  labels:
+    app: 002-example-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: 002-example-backend
+  template:
+    metadata:
+      labels:
+        app: 002-example-backend
+    spec:
+      containers:
+      - name: api
+        image: diwamln/example-backend:build-16-a06b178-test
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: 002-example-backend-config # Pastikan Secret ini sudah Anda buat dengan nama baru
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 002-example-backend-service
+  namespace: 999-testing-apps
+spec:
+  selector:
+    app: 002-example-backend
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000

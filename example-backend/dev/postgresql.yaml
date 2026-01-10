@@ -1,0 +1,105 @@
+# ==========================================
+# 2. DATABASE SECRET: 002-postgres-secret
+# ==========================================
+apiVersion: v1
+kind: Secret
+metadata:
+  name: 002-postgres-secret
+  namespace: 999-testing-apps
+type: Opaque
+stringData:
+  postgres-user: "admin"
+  postgres-password: "password123"
+  postgres-db: "roomify_db"
+
+---
+# ==========================================
+# 3. DATABASE STORAGE: 002-postgres-pvc-longhorn
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 002-postgres-pvc-longhorn
+  namespace: 999-testing-apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+# ==========================================
+# 4. DATABASE DEPLOYMENT: 002-postgres-testing
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 002-postgres-testing
+  namespace: 999-testing-apps
+  labels:
+    app: 002-postgres-testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 002-postgres-testing
+  template:
+    metadata:
+      labels:
+        app: 002-postgres-testing
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: 002-postgres-secret
+              key: postgres-db
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: 002-postgres-secret
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: 002-postgres-secret
+              key: postgres-password
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: 002-postgres-pvc-longhorn
+
+---
+# ==========================================
+# 5. DATABASE SERVICE: 002-postgres-db-service
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: 002-postgres-db-service
+  namespace: 999-testing-apps
+spec:
+  type: ClusterIP
+  selector:
+    app: 002-postgres-testing
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
