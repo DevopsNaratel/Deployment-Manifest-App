@@ -6,17 +6,18 @@ metadata:
 spec:
   project: default
   source:
+    # URL disinkronkan dengan menu Settings (Tanpa "/" di akhir)
     repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App
-    targetRevision: main
-    path: example-backend/dev # <--- Lokasi file deployment kamu
+    targetRevision: main # Menggunakan branch eksplisit untuk menghindari error resolusi HEAD
+    path: example-backend/dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: 999-testing-apps # <--- Namespace tujuan
+    namespace: 999-testing-apps
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true # <--- Biar nggak error "namespace not found" lagi
-      - PrunePropagationPolicy=foreground # Memastikan penghapusan sampai bersih ke akar
-      - PruneLast=true # Menghapus resource lama di akhir proses sinkronisasi
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true

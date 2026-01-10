@@ -1,10 +1,10 @@
 # ==========================================
-# 2. DATABASE SECRET: 002-postgres-secret
+# DATABASE SECRET
 # ==========================================
 apiVersion: v1
 kind: Secret
 metadata:
-  name: 002-postgres-secret
+  name: v002-postgres-secret
   namespace: 999-testing-apps
 type: Opaque
 stringData:
@@ -14,12 +14,12 @@ stringData:
 
 ---
 # ==========================================
-# 3. DATABASE STORAGE: 002-postgres-pvc-longhorn
+# DATABASE STORAGE (Longhorn)
 # ==========================================
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: 002-postgres-pvc-longhorn
+  name: v002-postgres-pvc-longhorn
   namespace: 999-testing-apps
 spec:
   accessModes:
@@ -31,24 +31,24 @@ spec:
 
 ---
 # ==========================================
-# 4. DATABASE DEPLOYMENT: 002-postgres-testing
+# DATABASE DEPLOYMENT
 # ==========================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 002-postgres-testing
+  name: v002-postgres-testing
   namespace: 999-testing-apps
   labels:
-    app: 002-postgres-testing
+    app: v002-postgres-testing
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 002-postgres-testing
+      app: v002-postgres-testing
   template:
     metadata:
       labels:
-        app: 002-postgres-testing
+        app: v002-postgres-testing
     spec:
       containers:
       - name: postgres
@@ -59,46 +59,39 @@ spec:
         - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:
-              name: 002-postgres-secret
+              name: v002-postgres-secret
               key: postgres-db
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: 002-postgres-secret
+              name: v002-postgres-secret
               key: postgres-user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: 002-postgres-secret
+              name: v002-postgres-secret
               key: postgres-password
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "256Mi"
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
       volumes:
       - name: postgres-data
         persistentVolumeClaim:
-          claimName: 002-postgres-pvc-longhorn
+          claimName: v002-postgres-pvc-longhorn
 
 ---
 # ==========================================
-# 5. DATABASE SERVICE: 002-postgres-db-service
+# DATABASE SERVICE
 # ==========================================
 apiVersion: v1
 kind: Service
 metadata:
-  name: 002-postgres-db-service
+  name: v002-postgres-db-service # Diawali huruf untuk kepatuhan DNS
   namespace: 999-testing-apps
 spec:
   type: ClusterIP
   selector:
-    app: 002-postgres-testing
+    app: v002-postgres-testing
   ports:
   - protocol: TCP
     port: 5432
