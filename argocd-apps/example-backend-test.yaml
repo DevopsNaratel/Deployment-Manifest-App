@@ -3,12 +3,13 @@ kind: Application
 metadata:
   name: example-backend-test
   namespace: cicd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # Menghapus resource cluster sampai bersih saat app dihapus dari ArgoCD
 spec:
   project: default
   source:
-    # URL disinkronkan dengan menu Settings (Tanpa "/" di akhir)
     repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App
-    targetRevision: main # Menggunakan branch eksplisit untuk menghindari error resolusi HEAD
+    targetRevision: main # Menghindari error 'HEAD must be resolved'
     path: example-backend/dev
   destination:
     server: https://kubernetes.default.svc
@@ -19,5 +20,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - PrunePropagationPolicy=foreground
+      - PrunePropagationPolicy=foreground # Menghapus resource lama secara agresif
       - PruneLast=true

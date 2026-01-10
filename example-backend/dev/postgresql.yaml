@@ -1,45 +1,20 @@
-# ==========================================
-# DATABASE SECRET
-# ==========================================
-apiVersion: v1
-kind: Secret
-metadata:
-  name: v002-postgres-secret
-  namespace: 999-testing-apps
-type: Opaque
-stringData:
-  postgres-user: "admin"
-  postgres-password: "password123"
-  postgres-db: "roomify_db"
-
----
-# ==========================================
-# DATABASE STORAGE (Longhorn)
-# ==========================================
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: v002-postgres-pvc-longhorn
   namespace: 999-testing-apps
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn
   resources:
     requests:
       storage: 2Gi
-
 ---
-# ==========================================
-# DATABASE DEPLOYMENT
-# ==========================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: v002-postgres-testing
   namespace: 999-testing-apps
-  labels:
-    app: v002-postgres-testing
 spec:
   replicas: 1
   selector:
@@ -53,9 +28,9 @@ spec:
       containers:
       - name: postgres
         image: postgres:15-alpine
-        ports:
-        - containerPort: 5432
         env:
+        - name: PGDATA # Solusi error lost+found
+          value: /var/lib/postgresql/data/pgdata
         - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:
@@ -74,25 +49,19 @@ spec:
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
+          subPath: pgdata # Menghindari folder lost+found
       volumes:
       - name: postgres-data
         persistentVolumeClaim:
           claimName: v002-postgres-pvc-longhorn
-
 ---
-# ==========================================
-# DATABASE SERVICE
-# ==========================================
 apiVersion: v1
 kind: Service
 metadata:
-  name: v002-postgres-db-service # Diawali huruf untuk kepatuhan DNS
+  name: v002-postgres-db-service # Hostname yang akan digunakan Backend
   namespace: 999-testing-apps
 spec:
-  type: ClusterIP
   selector:
     app: v002-postgres-testing
   ports:
-  - protocol: TCP
-    port: 5432
-    targetPort: 5432
+  - port: 5432

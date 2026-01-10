@@ -1,10 +1,7 @@
-# ==========================================
-# BACKEND APPLICATION: v002-example-backend
-# ==========================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: v002-example-backend # Diawali huruf untuk standar DNS
+  name: v002-example-backend # Prefix huruf agar patuh standar DNS-1035
   namespace: 999-testing-apps
   labels:
     app: v002-example-backend
@@ -18,51 +15,36 @@ spec:
       labels:
         app: v002-example-backend
     spec:
-      # WAJIB: Kunci untuk menarik image dari repo private devopsnaratel
       imagePullSecrets:
-      - name: docker-hub-secret 
+      - name: docker-hub-secret # Kunci akses repo private
       containers:
       - name: api
-        image: devopsnaratel/example-backend:build-16-a06b178-test
+        image: devopsnaratel/example-backend:build-17-270b1bb-test # Image terbaru dari Jenkins #17
         imagePullPolicy: IfNotPresent
         ports:
-        - name: http
-          containerPort: 3000
+        - containerPort: 3000
         envFrom:
         - secretRef:
-            name: v002-example-backend-config # Pastikan Secret ini dibuat manual
+            name: v002-example-backend-config # Secret environment variables
         livenessProbe:
           httpGet:
             path: /health
             port: 3000
           initialDelaySeconds: 30
-          periodSeconds: 30
         readinessProbe:
           httpGet:
             path: /health
             port: 3000
           initialDelaySeconds: 10
-          periodSeconds: 10
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "128Mi"
-          limits:
-            cpu: "200m"
-            memory: "256Mi"
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: v002-example-backend-service # DNS-1035: Wajib diawali huruf
+  name: v002-example-backend-service # Wajib diawali huruf
   namespace: 999-testing-apps
 spec:
   selector:
     app: v002-example-backend
-  type: ClusterIP
   ports:
-  - name: http
-    port: 80
+  - port: 80
     targetPort: 3000
-
