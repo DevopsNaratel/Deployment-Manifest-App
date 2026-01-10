@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: diwamln/example-backend:build-16-a06b178-test
+        image: devopsnaratel/example-backend:build-16-a06b178-test
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
