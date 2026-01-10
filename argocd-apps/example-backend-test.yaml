@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/diwamln/Deployment-Manifest-App/
+    repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App/
     targetRevision: HEAD
     path: example-backend/dev # <--- Lokasi file deployment kamu
   destination:
