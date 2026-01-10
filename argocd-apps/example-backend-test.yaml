@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App/
-    targetRevision: HEAD
+    targetRevision: main
     path: example-backend/dev # <--- Lokasi file deployment kamu
   destination:
     server: https://kubernetes.default.svc
