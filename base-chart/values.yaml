@@ -1,2 +1,23 @@
 # Default values. Will be overridden by app-specific values.
 replicaCount: 1
+
+# Default placeholders to prevent template errors
+namespace: default
+app:
+  id: "000"
+  name: "default-app"
+  env: "dev"
+
+image:
+  repository: "nginx"
+  tag: "latest"
+
+service:
+  port: 80
+  targetPort: 80
+
+storage:
+  size: "1Gi"
+  storageClassName: "longhorn"
+
+controllerType: Deployment
