@@ -1,0 +1,2 @@
+# Default values. Will be overridden by app-specific values.
+replicaCount: 1

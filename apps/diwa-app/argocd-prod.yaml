@@ -1,0 +1,41 @@
+# --- DEPLOY DATABASE PROD ---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: diwa-db-003-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/your-org/manifest-repo.git'
+    targetRevision: HEAD
+    path: base-chart
+    helm:
+      valueFiles: ["../apps/diwa-app/values-db-prod.yaml"]
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: diwa-app-prod
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
+---
+# --- DEPLOY APP PROD ---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: diwa-app-003-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/your-org/manifest-repo.git'
+    targetRevision: HEAD
+    path: base-chart
+    helm:
+      valueFiles: ["../apps/diwa-app/values-prod.yaml"]
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: diwa-app-prod
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]

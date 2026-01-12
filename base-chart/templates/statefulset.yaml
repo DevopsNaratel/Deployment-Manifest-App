@@ -1,0 +1,38 @@
+{{- if eq .Values.controllerType "StatefulSet" }}
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-{{ include "base-chart.name" . }}
+spec:
+  serviceName: svc-{{ include "base-chart.name" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/id: {{ .Values.app.id | quote }}
+  template:
+    metadata:
+      labels:
+        {{- include "base-chart.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: postgres
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        # PAKAI INI BIAR SAMA DENGAN APP
+        envFrom:
+        - secretRef:
+            name: secret-{{ include "base-chart.name" . }}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.storage.size | default "1Gi" }}
+{{- end }}

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: user-service-001-testing
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/USERNAME/manifest-repo.git' # GANTI INI NANTI
+    targetRevision: HEAD
+    path: base-chart
+    helm:
+      valueFiles:
+        - ../apps/user-service/values-testing.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: shared-testing
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

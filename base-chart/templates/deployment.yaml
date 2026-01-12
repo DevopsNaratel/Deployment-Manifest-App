@@ -1,0 +1,28 @@
+{{- if eq .Values.controllerType "Deployment" }}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-{{ include "base-chart.name" . }}
+  labels:
+    {{- include "base-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/id: {{ .Values.app.id | quote }}
+  template:
+    metadata:
+      labels:
+        {{- include "base-chart.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: main
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          # INI KUNCINYA: Mengambil semua isi Secret sebagai Env
+          envFrom:
+            - secretRef:
+                name: secret-{{ include "base-chart.name" . }}
+
+{{- end }}

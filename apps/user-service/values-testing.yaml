@@ -1,0 +1,12 @@
+app:
+  id: "001"
+  name: "user-service"
+  env: "testing"
+image:
+  repository: "nginx"
+  tag: "latest"
+service:
+  port: 80
+env:
+  - name: "DB_HOST"
+    value: "test-db.local"
