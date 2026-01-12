@@ -1,5 +1,6 @@
+namespace: diwa-app-prod
 controllerType: Deployment
-app: { id: "003", name: "diwa-app", env: "testing" }
+app: { id: "003", name: "diwa-app", env: "prod" }
 image: { repository: "my-reg/diwa-app", tag: "6-b866df1"
 service: { port: 80, targetPort: 3000 }
 secretData:
@@ -7,5 +8,5 @@ secretData:
   DB_HOST: "svc-diwa-app-db-003"
   DB_PORT: "5432"
   DB_USER: "postgres"
-  DB_PASSWORD: "admin123"
-  DB_NAME: "diwa_db"
+  DB_PASSWORD: "SuperSecurePasswordProd003!"
+  DB_NAME: "diwa_prod_db"
