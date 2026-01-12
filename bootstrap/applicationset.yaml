@@ -5,7 +5,6 @@ metadata:
   namespace: cicd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
   generators:
   - git:
       repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App.git
