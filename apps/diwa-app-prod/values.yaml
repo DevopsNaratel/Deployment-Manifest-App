@@ -1,4 +1,4 @@
-namespace: diwa-app-prod
+namespace: diwa-app-003
 controllerType: Deployment
 app: { id: "003", name: "diwa-app", env: "prod" }
 image: { repository: "diwamln/diwa-app", tag: "6-b866df1" }

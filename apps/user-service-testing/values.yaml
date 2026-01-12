@@ -1,4 +1,4 @@
-namespace: shared-testing
+namespace: testing
 app:
   id: "001"
   name: "user-service"

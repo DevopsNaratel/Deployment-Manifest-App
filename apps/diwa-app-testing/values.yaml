@@ -1,4 +1,4 @@
-namespace: shared-testing
+namespace: testing
 controllerType: Deployment
 app: { id: "003", name: "diwa-app", env: "testing" }
 image: { repository: "diwamln/diwa-app", tag: "6-b866df1" }

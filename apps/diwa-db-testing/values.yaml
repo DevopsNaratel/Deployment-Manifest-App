@@ -1,4 +1,4 @@
-namespace: shared-testing
+namespace: testing
 controllerType: StatefulSet
 isDatabase: true
 app: { id: "003", name: "diwa-app-db", env: "testing" }

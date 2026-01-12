@@ -10,8 +10,8 @@ spec:
   - git:
       repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App.git
       revision: HEAD
-      directories:
-      - path: apps/*
+      files:
+      - path: "apps/**/values.yaml"
   template:
     metadata:
       name: '{{.path.basename}}'
@@ -23,10 +23,10 @@ spec:
         path: base-chart
         helm:
           valueFiles:
-          - '../{{.path.path}}/values.yaml'
+          - '/{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{.path.basename}}'
+        namespace: '{{.values.namespace}}'
       syncPolicy:
         automated:
           prune: true

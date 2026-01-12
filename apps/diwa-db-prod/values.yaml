@@ -1,4 +1,4 @@
-namespace: diwa-app-prod
+namespace: diwa-app-003
 controllerType: StatefulSet
 isDatabase: true
 app: { id: "003", name: "diwa-app-db", env: "prod" }
