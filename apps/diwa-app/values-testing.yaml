@@ -1,6 +1,6 @@
 controllerType: Deployment
 app: { id: "003", name: "diwa-app", env: "testing" }
-image: { repository: "my-reg/diwa-app", tag: "latest" }
+image: { repository: "my-reg/diwa-app", tag: "6-b866df1"
 service: { port: 80, targetPort: 3000 }
 secretData:
   PORT: "3000"
