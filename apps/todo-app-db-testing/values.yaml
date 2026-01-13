@@ -1,0 +1,36 @@
+namespace: testing
+controllerType: StatefulSet
+app:
+    id: "004"
+    name: todo-app-db
+    env: testing
+image:
+    repository: postgres
+    tag: 15-alpine
+service:
+    port: 5432
+    targetPort: 5432
+secretData:
+    POSTGRES_DB: ENC[AES256_GCM,data:kwzxBmSUhHb4OdTQRcA=,iv:fJdbgKDK++8eAS+ZnM6H1b5jgizY7A4C2V5xagv+PYc=,tag:Y3/5h2CnjwU2PXqXM85WwQ==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:AUERmf+26SY=,iv:A7v1ZFHl9v40NS4pue8HoC8ROm+lZRg9xQZoqOBJpSs=,tag:3KpRzHIISsxKbtzt/W+nMQ==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:OapOYYbIhAB3dwM=,iv:3igkZ1zGevXp2bxrwJwXlkEhA0HHOxD3KIhLcJG8jVw=,tag:6n7G9iTXPsNzHi87rMSgyA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnSUR3a3l6TGQ1SXhGbmk2
+            YjZuNDkvRmhwMUJHcFBqeDlmbnViRlBWQ1UwCjJGeWt1V1VOcFNLdE5aMkhYU2Uw
+            NWZiaE1yVkFicXBwVkg4bCtoYUJtS00KLS0tIFpnMy85L3c2TmZBckk1WUdtNXFP
+            MzNhYzhyaTFKMlN0VTg2djduV2s3WHMKCjXqWK60Tnwt+6tcBzH+WcKtmVCVgvuZ
+            EpDzl12ckEPShOaCErP1EvXSjHsj4izHDptMYLE+S689wQWc0da49g==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-13T03:58:49Z"
+    mac: ENC[AES256_GCM,data:vwhQudwdaH+uAJXgrSwyWr5KoSTyRVePUxippY8XLWg/VjheQrYzhty9MyZL8HOsgou+rZF8Qh6Mpl0e+5KXd6IxxVDviYl9+ovd2VAqQEHcrYavVWhWQHOmFqDQQX8A2QjGMgds9K+TnFu0Y1jccd89e80Y4V7GjT1uHxFh5uo=,iv:w2ALBKxIrm98uh/v4Jp6+V44ilCCQzauYQtA2Hqu/QM=,tag:376c15ye08axVAvqgPfURA==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0
