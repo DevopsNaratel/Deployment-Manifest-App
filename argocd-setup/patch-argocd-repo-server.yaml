@@ -22,11 +22,8 @@ spec:
               name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-sidecar-plugin:v1
-          # Gunakan binary dari dalam image, bukan dari shared volume
-          command:
-            - "/bin/sh"
-            - "-c"
-            - "argocd-cmp-server --loglevel debug --logformat json"
+          # Debugging mode: keep container running
+          command: ["/bin/sh", "-c", "sleep infinity"]
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
