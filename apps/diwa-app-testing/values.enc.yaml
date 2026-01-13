@@ -1,0 +1,39 @@
+namespace: testing
+controllerType: Deployment
+app:
+    id: "003"
+    name: diwa-app
+    env: testing
+image:
+    repository: diwamln/diwa-app
+    tag: 6-b866df1
+service:
+    port: 80
+    targetPort: 3000
+secretData:
+    PORT: ENC[AES256_GCM,data:st1cGQ==,iv:dqQe3k7FJdiF1hYKJNb9sVgfDhfKJ3qeQfBtd2cHaKQ=,tag:1FiCMzzeeFEJ54wKFgWQXA==,type:str]
+    DB_HOST: ENC[AES256_GCM,data:o4QbeibnMd6pjUlC8UwysagHng==,iv:IMtkXWQhoOkgxEzUAMdH5ShCAWy0XNtCk/X5/ouEBhE=,tag:JxP8tSI19KpVUHYAJJJXbw==,type:str]
+    DB_PORT: ENC[AES256_GCM,data:b3wIcw==,iv:/Zl2x65oyxw08QDv/8g5n79CD7uh5AuGycLavhI9CBM=,tag:8XEON8LowSllOdWmp1obpA==,type:str]
+    DB_USER: ENC[AES256_GCM,data:uIDlUXirxT8=,iv:T2X7OZavilww3SAEPYKoh0AXPR+JfK2rUFwXG2B7Y0Q=,tag:k0AnF/f9cTCkCIXrm9k32A==,type:str]
+    DB_PASSWORD: ENC[AES256_GCM,data:4N8OvsnKLa8=,iv:V1r91emCd5ITOy3BLqYLjBmS8FMPOOISGL/395rPt+U=,tag:YxN3M7AUZrkTGV3/GvwZTw==,type:str]
+    DB_NAME: ENC[AES256_GCM,data:na+hCScbNQ==,iv:J9vwvx6+9XhGcyDUmmB2mN6zNkyli3/hVl8Fh4zAHP8=,tag:yhLTE/350ze0+qup4QeoRQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzTVViUHJLUXVaaVBPSUZl
+            NFFVVGFESjZieUFnZzFtNVhxSHhleTdGOVdJCjRZV1U0dlhCdFRlZ1pFSTJJWGg1
+            MnVOeVJtRU5iOFd4UmU5alJmZXZ2cVkKLS0tIGlaNXZpaUNNa21KWlY5UDFHVXFv
+            a1hFTE5tZnIvZnVYM1hNZG8rbnA0OWsKKqvaFHymuf4VEHMx+FMBR2z7YRwumdQ9
+            BXq8fOvsHQna+5H0yFidKaJ//3LTixw5jXpkY05OohHY4m7dSfNPJg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-13T01:51:53Z"
+    mac: ENC[AES256_GCM,data:oqapGvG4bK4UE5Mn2mLFlTRr4A86ep1LEZSYdybm+k+fi7+5A9FqutShhZJtBcYneirS08iNVh0hOmG8iHcfJ6kS5prfYdY32fAisYwZ/34x/OV8hURH8myBXj+P7DGXkG8e95SjZ9nmiu7REmbuWB3IQXVFXc7aQ/7ZXFCTgyE=,iv:hGTshN244YJhQaczEBxnUj4qoyseQZ4XP3ezHGaTv6Y=,tag:LTyMlF5OXLgi+k0Es+WVRQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0
