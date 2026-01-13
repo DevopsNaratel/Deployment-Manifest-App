@@ -11,8 +11,6 @@ data:
       name: my-helm-secrets
     spec:
       allowConcurrency: true
-      discover:
-        fileName: "Chart.yaml"
       generate:
         command:
           - sh
