@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cmp-plugin
-  namespace: argocd
+  namespace: cicd
 data:
   plugin.yaml: |
     apiVersion: argoproj.io/v1alpha1
