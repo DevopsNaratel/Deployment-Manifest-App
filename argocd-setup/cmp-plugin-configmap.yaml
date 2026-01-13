@@ -12,11 +12,7 @@ data:
     spec:
       allowConcurrency: true
       discover:
-        find:
-          command:
-            - sh
-            - "-c"
-            - "find . -name 'values.yaml' -o -name 'values.enc.yaml' -o -name 'secrets.yaml'"
+        fileName: "Chart.yaml"
       generate:
         command:
           - sh
