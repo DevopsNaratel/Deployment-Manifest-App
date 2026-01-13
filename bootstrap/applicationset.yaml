@@ -21,11 +21,9 @@ spec:
         targetRevision: HEAD
         path: base-chart
         plugin:
-          # Pastikan nama ini sama dengan yang ada di ConfigMap CMP Anda
-          name: argocd-vault-plugin-helm 
+          name: helm-secrets
           env:
             - name: HELM_VALUES
-              # Mengambil file values.yaml dari folder app yang sesuai
               value: '../{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
