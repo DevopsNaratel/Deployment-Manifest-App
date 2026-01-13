@@ -22,7 +22,12 @@ spec:
               name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-vault-plugin:v1.18.1
-          command: [/var/run/argocd/argocd-cmp-server]
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              chmod +x /var/run/argocd/argocd-cmp-server
+              /var/run/argocd/argocd-cmp-server --loglevel debug --logformat json
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
