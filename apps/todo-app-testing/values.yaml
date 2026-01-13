@@ -5,7 +5,8 @@ app:
     name: todo-app
     env: testing
 image:
-    repository: docker.io/devops/todo-app-php
+image:
+    repository: docker.io/devopsnaratel/todo-app-php
     tag: build-3-bea2047-dev
 service:
     port: 80
