@@ -16,11 +16,12 @@ spec:
           configMap:
             name: cmp-plugin
       containers:
+        - name: argocd-repo-server
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-vault-plugin:v1.18.1
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 999
           command: [/var/run/argocd/argocd-cmp-server]
           env:
             - name: SOPS_AGE_KEY_FILE
