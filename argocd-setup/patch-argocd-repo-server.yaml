@@ -17,7 +17,7 @@ spec:
             name: cmp-plugin
       containers:
         - name: helm-secrets
-          image: ghcr.io/jkroepke/helm-secrets:v4.6.3
+          image: devopsnaratel/argocd-vault-plugin:v1.18.1
           securityContext:
             runAsNonRoot: true
             runAsUser: 999
