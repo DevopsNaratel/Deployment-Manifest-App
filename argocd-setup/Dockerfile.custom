@@ -1,0 +1,34 @@
+# Gunakan base image yang sama dengan ArgoCD agar kompatibel (glibc)
+FROM quay.io/argoproj/argocd:v2.11.0
+
+# Ganti user ke root untuk install tools
+USER root
+
+# Install dependencies dasar
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
+    gpg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install SOPS
+ARG SOPS_VERSION=3.9.0
+RUN curl -L -o /usr/local/bin/sops https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64 && \
+    chmod +x /usr/local/bin/sops
+
+# Install Helm Secrets Plugin
+# Helm sudah ada di image ArgoCD, kita tinggal install pluginnya
+# Kita install plugin ke folder sistem agar bisa diakses semua user
+ENV HELM_PLUGINS=/usr/local/share/helm/plugins
+RUN helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.0
+
+# Install ArgoCD CMP Server (Sebenarnya binary argocd sudah ada, tapi kita pastikan setup benar)
+# Kita tidak perlu copy binary manual karena kita extend image ArgoCD asli.
+# Binary 'argocd-cmp-server' sebenarnya adalah symlink ke 'argocd'.
+RUN ln -s /usr/local/bin/argocd /usr/local/bin/argocd-cmp-server
+
+# Kembalikan ke user argocd
+USER 999
+
+# Set entrypoint default ke cmp-server
+ENTRYPOINT ["/var/run/argocd/argocd-cmp-server"]

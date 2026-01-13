@@ -21,16 +21,13 @@ spec:
             - mountPath: /var/run/argocd
               name: var-files
         - name: helm-secrets
-          image: devopsnaratel/argocd-vault-plugin:v1.18.1
-          command:
-            - "/bin/sh"
-            - "-c"
-            - |
-              chmod +x /var/run/argocd/argocd-cmp-server
-              /var/run/argocd/argocd-cmp-server --loglevel debug --logformat json
+          image: devopsnaratel/argocd-sidecar-plugin:v1
+          # Command default dari image sudah benar (ENTRYPOINT), jadi kita hapus override command yang aneh-aneh
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
+            - name: HELM_PLUGINS
+              value: /usr/local/share/helm/plugins
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
