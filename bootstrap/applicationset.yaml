@@ -22,10 +22,12 @@ spec:
         path: base-chart
         helm:
           valueFiles:
-          - '/{{.path.path}}/{{.path.filename}}'
+            # GUNAKAN ../ karena folder apps ada di luar folder base-chart
+            - '../{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{.values.namespace}}'
+        # PERBAIKAN: Langsung panggil .namespace, bukan .values.namespace
+        namespace: '{{.namespace}}'
       syncPolicy:
         automated:
           prune: true
