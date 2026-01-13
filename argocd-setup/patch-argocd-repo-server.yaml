@@ -22,8 +22,18 @@ spec:
               name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-sidecar-plugin:v1
-          # Debugging mode: keep container running
-          command: ["/bin/sh", "-c", "sleep infinity"]
+          # Gunakan binary dari dalam image
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              if [ ! -f /home/argocd/cmp-server/config/plugin.yaml ]; then
+                echo "ERROR: Config file not found at /home/argocd/cmp-server/config/plugin.yaml"
+                ls -R /home/argocd/cmp-server
+                exit 1
+              fi
+              echo "Config found, starting server..."
+              argocd-cmp-server --loglevel debug --logformat json
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
