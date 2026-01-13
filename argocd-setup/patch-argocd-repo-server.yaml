@@ -48,3 +48,5 @@ spec:
             - mountPath: /helm-secrets/keys.txt
               subPath: keys.txt
               name: sops-age
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: plugins
