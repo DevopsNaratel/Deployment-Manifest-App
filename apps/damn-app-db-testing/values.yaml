@@ -1,0 +1,16 @@
+namespace: testing
+controllerType: StatefulSet
+app:
+  id: "001"
+  name: "damn-app-db"
+  env: "testing"
+image:
+  repository: "postgres"
+  tag: "15-alpine"
+service:
+  port: 5432
+  targetPort: 5432
+secretData:
+  POSTGRES_DB: "app_db"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "admin123"

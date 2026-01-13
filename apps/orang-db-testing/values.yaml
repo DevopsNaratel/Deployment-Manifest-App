@@ -1,0 +1,36 @@
+namespace: testing
+controllerType: StatefulSet
+app:
+    id: "001"
+    name: orang-db
+    env: testing
+image:
+    repository: postgres
+    tag: 15-alpine
+service:
+    port: 5432
+    targetPort: 5432
+secretData:
+    POSTGRES_DB: ENC[AES256_GCM,data:5FVbOivn,iv:ZjKA5zyAE3dWBb7E5uum1dly460BWvyhxPEKti02938=,tag:dfAsjYfeyE4k0me5KHOD6Q==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:brizUq3Un74=,iv:O1aTDBFwaZ4DE6h9LBRFs6KJS/1dNeGXw/N7Aqt9OWM=,tag:KS/Z1zgmoYTN9GdWQZh12w==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:lPO6T+jkdoc=,iv:pqqsCONvB3Ib91vM6eDkUpxehlfHn4EjooACIzjlqDU=,tag:fA5bh1HltoyeNMTkg5P9Bw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEMW9KdjU5OVdMcnpFUkxG
+            ME9Ha09yRVJBd0c2eEV4R3h4OEFjUmFVSGhvClRHckRKekNhdFptczB3b2NwU3ly
+            VE9MSVlRa0U3UGNhdTZhQlhGQThZakUKLS0tIE1wTHM1YXVxSkFkRGxUcFhkbGo1
+            K1hiN2NhOWVvZmd3MTdIcGpSclFVcEEKJaOxpl5r0oQsWrhrSWW+4TDiom+cojmA
+            zCXfrWY+x4ksc9/lyIiL/NR5qki8gbKxoicpjcJgEeF9QwU2LwWJPQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-13T03:23:00Z"
+    mac: ENC[AES256_GCM,data:GHG3C652ix9O6Da02ZjI08KTLTQXSuPUDihy1sQ/dl5ztC6TzdwkQJYmAU4cYeGgf+i4aHejaktsHvmZ5zAhdnuGMElTQ5BjV2PI+Ixex+sC/uFqthhK2R+Gungmsqz6KtG6IPAC8Z8n0EI67sSJrSzk4S5mLeQpZpZf4gluMHQ=,iv:U74xIH2q7qN3G+OXO7OBAZbSVa+wXjlld+ZBgOEVhSg=,tag:l7anOq0hQHqppc7OY9nDIQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0
