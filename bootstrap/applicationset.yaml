@@ -20,13 +20,15 @@ spec:
         repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App.git
         targetRevision: HEAD
         path: base-chart
-        helm:
-          valueFiles:
-            # GUNAKAN ../ karena folder apps ada di luar folder base-chart
-            - '../{{.path.path}}/{{.path.filename}}'
+        plugin:
+          # Pastikan nama ini sama dengan yang ada di ConfigMap CMP Anda
+          name: argocd-vault-plugin-helm 
+          env:
+            - name: HELM_VALUES
+              # Mengambil file values.yaml dari folder app yang sesuai
+              value: '../{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
-        # PERBAIKAN: Langsung panggil .namespace, bukan .values.namespace
         namespace: '{{.namespace}}'
       syncPolicy:
         automated:

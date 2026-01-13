@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+  namespace: cicd
+spec:
+  template:
+    spec:
+      volumes:
+        - name: sops-age
+          secret:
+            secretName: sops-age-key
+        - name: cmp-plugin
+          configMap:
+            name: cmp-plugin
+      containers:
+        - name: helm-secrets
+          image: ghcr.io/jkroepke/helm-secrets:v4.6.3
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+          command: [/var/run/argocd/argocd-cmp-server]
+          env:
+            - name: SOPS_AGE_KEY_FILE
+              value: /helm-secrets/keys.txt
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
+            - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+              subPath: plugin.yaml
+              name: cmp-plugin
+            - mountPath: /helm-secrets/keys.txt
+              subPath: keys.txt
+              name: sops-age
