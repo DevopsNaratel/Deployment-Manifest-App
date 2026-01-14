@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.app.id }}-{{ .Values.app.name }}
+  name: {{ .Values.app.id }}-{{ .Values.app.name | replace "-db" "" }}
   labels:
-    name: {{ .Values.app.id }}-{{ .Values.app.name }}
+    name: {{ .Values.app.id }}-{{ .Values.app.name | replace "-db" "" }}
     app.kubernetes.io/managed-by: argocd
 {{- end }}

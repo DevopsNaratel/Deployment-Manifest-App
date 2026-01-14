@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploy-{{ include "base-chart.name" . }}
-  namespace: {{ if eq .Values.app.env "testing" }}testing{{ else }}{{ .Values.app.id }}-{{ .Values.app.name }}{{ end }}
+  namespace: {{ if eq .Values.app.env "testing" }}testing{{ else }}{{ .Values.app.id }}-{{ .Values.app.name | replace "-db" "" }}{{ end }}
   labels:
     {{- include "base-chart.labels" . | nindent 4 }}
     {{- if .Values.backup }}
