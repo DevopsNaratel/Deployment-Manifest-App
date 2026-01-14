@@ -20,23 +20,25 @@ data:
             export PATH=$PATH:/custom-tools
             export HELM_PLUGINS=/custom-tools/helm-plugins
             
+            # ArgoCD custom env vars are prefixed with ARGOCD_ENV_
+            # We check both HELM_VALUES and ARGOCD_ENV_HELM_VALUES
+            VALS_FILE=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
+            
             echo "DEBUG: HELM_VALUES is '$HELM_VALUES'" >&2
+            echo "DEBUG: ARGOCD_ENV_HELM_VALUES is '$ARGOCD_ENV_HELM_VALUES'" >&2
+            echo "DEBUG: Final VALS_FILE is '$VALS_FILE'" >&2
             
-            # Decrypt to a file, capturing logs to stderr
-            # Note: helm secrets decrypt outputs the SECRET content to stdout.
-            # We must ensure no other logs go to stdout.
-            helm secrets decrypt "$HELM_VALUES" > values.dec.yaml
-            EXIT_CODE=$?
-            
-            if [ $EXIT_CODE -ne 0 ]; then
-              echo "ERROR: Decryption failed with code $EXIT_CODE" >&2
-              echo "CONTENT of values.dec.yaml (might contain error msg):" >&2
-              cat values.dec.yaml >&2
+            if [ -z "$VALS_FILE" ]; then
+              echo "ERROR: HELM_VALUES is not set!" >&2
+              env | grep ARGOCD >&2
               exit 1
             fi
             
-            # Check if file looks like YAML (basic check)
-            head -n 1 values.dec.yaml >&2
+            helm secrets decrypt "$VALS_FILE" > values.dec.yaml
+            if [ $? -ne 0 ]; then
+               echo "ERROR: Decryption failed" >&2
+               exit 1
+            fi
             
             helm template . -f values.dec.yaml
       lockRepo: false
