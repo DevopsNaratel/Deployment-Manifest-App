@@ -20,21 +20,23 @@ data:
             export PATH=$PATH:/custom-tools
             export HELM_PLUGINS=/custom-tools/helm-plugins
             
-            # Debug: Print what we are doing
-            echo "Decrypting $HELM_VALUES..." >&2
+            echo "DEBUG: HELM_VALUES is '$HELM_VALUES'" >&2
             
-            # Decrypt the values file. 
-            # We use 'helm secrets decrypt' which is simpler than the template wrapper.
-            # We output to a local file 'values.dec.yaml'
+            # Decrypt to a file, capturing logs to stderr
+            # Note: helm secrets decrypt outputs the SECRET content to stdout.
+            # We must ensure no other logs go to stdout.
             helm secrets decrypt "$HELM_VALUES" > values.dec.yaml
+            EXIT_CODE=$?
             
-            # Check if decryption worked
-            if [ ! -s values.dec.yaml ]; then
-              echo "Error: Decrypted file is empty or missing!" >&2
+            if [ $EXIT_CODE -ne 0 ]; then
+              echo "ERROR: Decryption failed with code $EXIT_CODE" >&2
+              echo "CONTENT of values.dec.yaml (might contain error msg):" >&2
+              cat values.dec.yaml >&2
               exit 1
             fi
             
-            # Run standard Helm Template
-            # We use the decrypted file
+            # Check if file looks like YAML (basic check)
+            head -n 1 values.dec.yaml >&2
+            
             helm template . -f values.dec.yaml
       lockRepo: false
