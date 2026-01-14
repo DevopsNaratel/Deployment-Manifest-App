@@ -14,6 +14,9 @@ secretData:
     POSTGRES_DB: ENC[AES256_GCM,data:ngE8rn/mPwApo4eFUho=,iv:BLTg3Eb5SLY1OSTsf8RjmCk6vu7AehgXoN0/5ZyDrsM=,tag:U2zjjiFFJQKkbpIztcCHkQ==,type:str]
     POSTGRES_USER: ENC[AES256_GCM,data:8pviIb6p3pY=,iv:fnPEu/QoFj9/dGp7Zh9/hN92DWF9kipqIeUpvEv03rc=,tag:YlhUwX5YcPfQoBbDyh6ypA==,type:str]
     POSTGRES_PASSWORD: ENC[AES256_GCM,data:Pwy3kmzBHtYcMWk=,iv:k+Gjo4rw+dfwzjgJdPvUaPtb7s1o6qkLT2SReOhdpNw=,tag:Qc7Kqx2zexlSBj8061O9LQ==,type:str]
+backup:
+  enabled: true
+  type: "postgres"
 sops:
     kms: []
     gcp_kms: []

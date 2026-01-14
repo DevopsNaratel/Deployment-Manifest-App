@@ -4,6 +4,13 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-{{ include "base-chart.name" . }}
+  labels:
+    {{- include "base-chart.labels" . | nindent 4 }}
+    {{- if .Values.backup }}
+    {{- if .Values.backup.enabled }}
+    backup-type: {{ .Values.backup.type | quote }}
+    {{- end }}
+    {{- end }}
 spec:
   serviceName: svc-{{ include "base-chart.name" . }}
   replicas: 1
@@ -14,6 +21,11 @@ spec:
     metadata:
       labels:
         {{- include "base-chart.labels" . | nindent 8 }}
+        {{- if .Values.backup }}
+        {{- if .Values.backup.enabled }}
+        backup-type: {{ .Values.backup.type | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       containers:
       - name: postgres
