@@ -5,7 +5,6 @@ app:
     name: todo-app
     env: testing
 image:
-image:
     repository: docker.io/devopsnaratel/todo-app-php
     tag: build-3-bea2047-dev
 service:
