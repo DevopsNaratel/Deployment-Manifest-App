@@ -10,11 +10,11 @@ data:
       name: helm-secrets
     spec:
       allowConcurrency: true
+      # CHANGE: Use a command that always succeeds to force-enable the plugin
       discover:
-        # Ini penting agar ArgoCD tahu kapan menggunakan plugin ini
-        fileName: "values.yaml"
+        find:
+          command: ["sh", "-c", "echo 'ok'"]
       generate:
         command: ["/bin/sh", "-c"]
-        # Tambahkan export PATH dan HELM_PLUGINS di dalam command generate juga
         args: ["export PATH=$PATH:/custom-tools && export HELM_PLUGINS=/custom-tools/helm-plugins && helm secrets template . -f $HELM_VALUES"]
       lockRepo: false
