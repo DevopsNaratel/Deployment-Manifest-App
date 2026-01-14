@@ -1,0 +1,9 @@
+{{- if ne .Values.app.env "testing" }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.app.id }}-{{ .Values.app.name }}
+  labels:
+    name: {{ .Values.app.id }}-{{ .Values.app.name }}
+    app.kubernetes.io/managed-by: argocd
+{{- end }}
