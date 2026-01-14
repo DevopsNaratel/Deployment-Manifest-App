@@ -12,9 +12,10 @@ data:
       allowConcurrency: true
       discover:
         find:
-          # Only enable this plugin if 'values.yaml' exists in the source directory.
-          # This prevents it from hijacking root-app or other plain manifest apps.
-          command: ["sh", "-c", "find . -maxdepth 1 -name 'values.yaml' | grep -q ."]
+          # Check for Chart.yaml OR values.yaml to identify a valid Helm/Secrets app.
+          # Root-app (bootstrap/) has neither, so it will fail (Good).
+          # Base-chart has both, so it will pass (Good).
+          command: ["sh", "-c", "test -f Chart.yaml || test -f values.yaml"]
       generate:
         command: ["/bin/sh", "-c"]
         args:
@@ -22,7 +23,6 @@ data:
             export PATH=$PATH:/custom-tools
             export SOPS_AGE_KEY_FILE=/helm-secrets/keys.txt
             
-            # Get the values file path
             VALS_FILE=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
             
             if [ -z "$VALS_FILE" ]; then
@@ -30,13 +30,11 @@ data:
               exit 1
             fi
             
-            echo "Decrypting $VALS_FILE using direct SOPS binary..." >&2
-            
+            # Using direct SOPS
             /custom-tools/sops --decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
             
-            EXIT_CODE=$?
-            if [ $EXIT_CODE -ne 0 ]; then
-               echo "ERROR: SOPS Decryption failed with code $EXIT_CODE" >&2
+            if [ $? -ne 0 ]; then
+               echo "ERROR: SOPS Decryption failed" >&2
                exit 1
             fi
             
