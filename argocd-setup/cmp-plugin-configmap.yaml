@@ -16,6 +16,5 @@ data:
           - sh
           - "-c"
           - |
-            # Helper to decrypt secrets if needed
             helm secrets template . -f $HELM_VALUES
       lockRepo: false
