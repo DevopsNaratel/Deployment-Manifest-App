@@ -9,6 +9,8 @@ spec:
       volumes:
         - name: var-files
           emptyDir: {}
+        - name: plugins-dir # VOLUME BARU KHUSUS SOCKET
+          emptyDir: {}
         - name: sops-age
           secret:
             secretName: sops-age-key
@@ -21,8 +23,16 @@ spec:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: var-files
+              name: plugins-dir # PISAHKAN KE VOLUME BARU
         - name: helm-secrets
+          image: devopsnaratel/argocd-sidecar-plugin:v1
+          # ... (sisanya tetap sama)
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: plugins-dir # PISAHKAN KE VOLUME BARU
+            # ... (mount sops dan config tetap)        - name: helm-secrets
           image: devopsnaratel/argocd-sidecar-plugin:v1
           command:
             - "/bin/sh"
