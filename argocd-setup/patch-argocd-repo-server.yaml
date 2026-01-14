@@ -20,13 +20,23 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apk add --no-cache ca-certificates wget tar
+              apk add --no-cache ca-certificates wget tar sed
               wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64
               chmod +x /custom-tools/sops
               wget -O /tmp/helm-secrets.tar.gz https://github.com/jkroepke/helm-secrets/releases/download/v4.6.0/helm-secrets.tar.gz
-              # FIXED: Extract directly to plugins dir, let tar create the subfolder
               mkdir -p /custom-tools/helm-plugins
               tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins
+              
+              # FIX: Helm sometimes fails to pick the right command if platformCommand exists.
+              # We overwrite plugin.yaml with a clean Linux-only version.
+              cat <<EOF > /custom-tools/helm-plugins/helm-secrets/plugin.yaml
+              name: "secrets"
+              version: "4.6.0"
+              usage: "Secrets encryption in Helm for Git storing"
+              description: "This plugin provides secrets values encryption for Helm charts secure storing"
+              useTunnel: false
+              command: "\$HELM_PLUGIN_DIR/scripts/run.sh"
+              EOF
           volumeMounts:
             - name: custom-tools
               mountPath: /custom-tools
