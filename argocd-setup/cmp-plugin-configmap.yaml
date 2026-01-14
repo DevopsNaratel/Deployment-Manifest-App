@@ -12,7 +12,9 @@ data:
       allowConcurrency: true
       discover:
         find:
-          command: ["sh", "-c", "echo 'ok'"]
+          # Only enable this plugin if 'values.yaml' exists in the source directory.
+          # This prevents it from hijacking root-app or other plain manifest apps.
+          command: ["sh", "-c", "find . -maxdepth 1 -name 'values.yaml' | grep -q ."]
       generate:
         command: ["/bin/sh", "-c"]
         args:
@@ -30,9 +32,6 @@ data:
             
             echo "Decrypting $VALS_FILE using direct SOPS binary..." >&2
             
-            # DIRECT SOPS CALL
-            # We bypass the helm-secrets wrapper to avoid argument parsing issues.
-            # We use --ignore-mac to handle the MAC mismatch issue.
             /custom-tools/sops --decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
             
             EXIT_CODE=$?
@@ -41,6 +40,5 @@ data:
                exit 1
             fi
             
-            # Run helm template with the decrypted file
             helm template . -f values.dec.yaml
       lockRepo: false
