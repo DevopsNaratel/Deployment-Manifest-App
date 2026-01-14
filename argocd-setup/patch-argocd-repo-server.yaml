@@ -22,17 +22,16 @@ spec:
               name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-sidecar-plugin:v1
-          # Gunakan binary dari dalam image
           command:
             - "/bin/sh"
             - "-c"
             - |
               if [ ! -f /home/argocd/cmp-server/config/plugin.yaml ]; then
                 echo "ERROR: Config file not found at /home/argocd/cmp-server/config/plugin.yaml"
-                ls -R /home/argocd/cmp-server
                 exit 1
               fi
               echo "Config found, starting server..."
+              # The plugin socket will be created in /home/argocd/cmp-server/plugins
               argocd-cmp-server --loglevel debug --logformat json
           env:
             - name: SOPS_AGE_KEY_FILE
@@ -40,13 +39,81 @@ spec:
             - name: HELM_PLUGINS
               value: /usr/local/share/helm/plugins
           volumeMounts:
+            # Shared volume for the Unix socket
             - mountPath: /var/run/argocd
               name: var-files
+            # This is critical: mount the SAME shared volume where the socket is generated
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: var-files
+            # Your specific configurations
             - mountPath: /home/argocd/cmp-server/config/plugin.yaml
               subPath: plugin.yaml
               name: cmp-plugin
             - mountPath: /helm-secrets/keys.txt
               subPath: keys.txt
               name: sops-age
-            - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: argocd-repo-server
+#   namespace: cicd
+# spec:
+#   template:
+#     spec:
+#       volumes:
+#         - name: var-files
+#           emptyDir: {}
+#         - name: sops-age
+#           secret:
+#             secretName: sops-age-key
+#         - name: cmp-plugin
+#           configMap:
+#             name: cmp-plugin
+
+# # ... (volumes section remains same)
+#       containers:
+#         - name: argocd-repo-server
+#           volumeMounts:
+#             - mountPath: /var/run/argocd
+#               name: var-files
+#         - name: helm-secrets
+#           # ...
+#           volumeMounts:
+#             - mountPath: /var/run/argocd
+#               name: var-files
+#             # CHANGE THIS: Mount the shared volume to the plugin path
+#             - mountPath: /home/argocd/cmp-server/plugins
+#               name: var-files 
+#         - name: helm-secrets
+#           image: devopsnaratel/argocd-sidecar-plugin:v1
+#           # Gunakan binary dari dalam image
+#           command:
+#             - "/bin/sh"
+#             - "-c"
+#             - |
+#               if [ ! -f /home/argocd/cmp-server/config/plugin.yaml ]; then
+#                 echo "ERROR: Config file not found at /home/argocd/cmp-server/config/plugin.yaml"
+#                 ls -R /home/argocd/cmp-server
+#                 exit 1
+#               fi
+#               echo "Config found, starting server..."
+#               argocd-cmp-server --loglevel debug --logformat json
+#           env:
+#             - name: SOPS_AGE_KEY_FILE
+#               value: /helm-secrets/keys.txt
+#             - name: HELM_PLUGINS
+#               value: /usr/local/share/helm/plugins
+#           volumeMounts:
+#             - mountPath: /var/run/argocd
+#               name: var-files
+#             - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+#               subPath: plugin.yaml
+#               name: cmp-plugin
+#             - mountPath: /helm-secrets/keys.txt
+#               subPath: keys.txt
+#               name: sops-age
+#             - mountPath: /home/argocd/cmp-server/plugins
+#               name: plugins
