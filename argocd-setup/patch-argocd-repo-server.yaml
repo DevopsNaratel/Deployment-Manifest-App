@@ -9,9 +9,9 @@ spec:
       volumes:
         - name: var-files
           emptyDir: {}
-        - name: plugins-dir # Volume KHUSUS untuk socket plugin
+        - name: plugins-dir
           emptyDir: {}
-        - name: custom-tools # Volume untuk menyimpan sops & plugins
+        - name: custom-tools
           emptyDir: {}
         - name: sops-age
           secret:
@@ -26,11 +26,14 @@ spec:
           args:
             - |
               apk add --no-cache ca-certificates wget tar
+              # Install SOPS
               wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64
               chmod +x /custom-tools/sops
+              
+              # Install Helm Secrets - STRUKTUR HARUS TEPAT
               wget -O /tmp/helm-secrets.tar.gz https://github.com/jkroepke/helm-secrets/releases/download/v4.6.0/helm-secrets.tar.gz
-              mkdir -p /custom-tools/helm-plugins
-              tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins
+              mkdir -p /custom-tools/helm-plugins/helm-secrets
+              tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins/helm-secrets
           volumeMounts:
             - name: custom-tools
               mountPath: /custom-tools
@@ -40,13 +43,15 @@ spec:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir # Gunakan volume berbeda
+              name: plugins-dir
         - name: helm-secrets
           image: quay.io/argoproj/argocd:v2.11.0
           command: ["/bin/sh", "-c"]
           args:
             - |
               export PATH=$PATH:/custom-tools
+              # Pastikan plugin terbaca oleh helm
+              export HELM_PLUGINS=/custom-tools/helm-plugins
               argocd-cmp-server --loglevel debug
           env:
             - name: SOPS_AGE_KEY_FILE
@@ -59,7 +64,7 @@ spec:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir # Gunakan volume berbeda
+              name: plugins-dir
             - mountPath: /custom-tools
               name: custom-tools
             - mountPath: /home/argocd/cmp-server/config/plugin.yaml

@@ -10,7 +10,11 @@ data:
       name: helm-secrets
     spec:
       allowConcurrency: true
+      discover:
+        # Ini penting agar ArgoCD tahu kapan menggunakan plugin ini
+        fileName: "values.yaml"
       generate:
         command: ["/bin/sh", "-c"]
-        args: ["helm secrets template . -f $HELM_VALUES"]
+        # Tambahkan export PATH dan HELM_PLUGINS di dalam command generate juga
+        args: ["export PATH=$PATH:/custom-tools && export HELM_PLUGINS=/custom-tools/helm-plugins && helm secrets template . -f $HELM_VALUES"]
       lockRepo: false
