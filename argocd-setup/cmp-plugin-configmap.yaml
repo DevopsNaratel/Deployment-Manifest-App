@@ -18,10 +18,9 @@ data:
         args:
           - |
             export PATH=$PATH:/custom-tools
-            export HELM_PLUGINS=/custom-tools/helm-plugins
             export SOPS_AGE_KEY_FILE=/helm-secrets/keys.txt
-            export SOPS_BINARY=/custom-tools/sops
             
+            # Get the values file path
             VALS_FILE=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
             
             if [ -z "$VALS_FILE" ]; then
@@ -29,14 +28,19 @@ data:
               exit 1
             fi
             
-            # Gunakan --ignore-mac karena file di repo terindikasi memiliki MAC mismatch
-            # Kita panggil helm secrets dengan backend sops secara eksplisit
-            helm secrets -b sops decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
+            echo "Decrypting $VALS_FILE using direct SOPS binary..." >&2
             
-            if [ $? -ne 0 ]; then
-               echo "ERROR: Decryption failed for $VALS_FILE" >&2
+            # DIRECT SOPS CALL
+            # We bypass the helm-secrets wrapper to avoid argument parsing issues.
+            # We use --ignore-mac to handle the MAC mismatch issue.
+            /custom-tools/sops --decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
+            
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -ne 0 ]; then
+               echo "ERROR: SOPS Decryption failed with code $EXIT_CODE" >&2
                exit 1
             fi
             
+            # Run helm template with the decrypted file
             helm template . -f values.dec.yaml
       lockRepo: false
