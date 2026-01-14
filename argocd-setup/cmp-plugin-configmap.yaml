@@ -12,10 +12,9 @@ data:
       allowConcurrency: true
       discover:
         find:
-          # Check for Chart.yaml OR values.yaml to identify a valid Helm/Secrets app.
-          # Root-app (bootstrap/) has neither, so it will fail (Good).
-          # Base-chart has both, so it will pass (Good).
-          command: ["sh", "-c", "test -f Chart.yaml || test -f values.yaml"]
+          # Force discovery to ALWAYS TRUE.
+          # We handle the non-helm apps in the generate phase.
+          command: ["sh", "-c", "echo ok"]
       generate:
         command: ["/bin/sh", "-c"]
         args:
@@ -25,12 +24,32 @@ data:
             
             VALS_FILE=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
             
+            # --- FALLBACK FOR ROOT-APP (No Values File) ---
             if [ -z "$VALS_FILE" ]; then
-              echo "ERROR: HELM_VALUES is not set!" >&2
-              exit 1
+              echo "DEBUG: No HELM_VALUES set. Assuming Directory mode." >&2
+              
+              # If Chart.yaml exists, try helm template without values (unlikely for root-app but safe)
+              if [ -f "Chart.yaml" ]; then
+                 helm template .
+                 exit 0
+              fi
+              
+              # Otherwise, cat all yaml files (Directory App simulation)
+              # Only cat if files exist to avoid error
+              if ls *.yaml >/dev/null 2>&1; then
+                # awk logic to ensure separators between files if needed, or just cat
+                # Simple cat is usually enough for single file or well-formed yamls
+                cat *.yaml
+              else
+                echo "DEBUG: No YAML files found." >&2
+              fi
+              exit 0
             fi
+            # ----------------------------------------------
             
-            # Using direct SOPS
+            # --- NORMAL FLOW FOR CHILD APPS ---
+            echo "Decrypting $VALS_FILE using direct SOPS binary..." >&2
+            
             /custom-tools/sops --decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
             
             if [ $? -ne 0 ]; then
