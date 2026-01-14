@@ -6,4 +6,9 @@ metadata:
   labels:
     name: {{ .Values.app.id }}-{{ .Values.app.name | replace "-db" "" }}
     app.kubernetes.io/managed-by: argocd
+    {{- if .Values.backup }}
+    {{- if .Values.backup.enabled }}
+    backup-type: {{ .Values.backup.type | quote }}
+    {{- end }}
+    {{- end }}
 {{- end }}
