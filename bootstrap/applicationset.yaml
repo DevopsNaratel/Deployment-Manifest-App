@@ -21,7 +21,7 @@ spec:
         targetRevision: HEAD
         path: base-chart
         plugin:
-          name: my-helm-secrets
+          name: helm-secrets
           env:
             - name: HELM_VALUES
               value: '../{{.path.path}}/{{.path.filename}}'

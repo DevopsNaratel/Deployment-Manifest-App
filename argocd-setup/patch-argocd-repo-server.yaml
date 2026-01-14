@@ -2,73 +2,64 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: argocd-repo-server
+  namespace: cicd
 spec:
   template:
     spec:
       volumes:
-        - name: custom-tools
-          emptyDir: {}
-        - name: plugins-dir
-          emptyDir: {}
         - name: var-files
           emptyDir: {}
-        - name: cmp-plugin
-          configMap:
-            name: cmp-plugin
+        - name: plugins-dir # Volume KHUSUS untuk socket plugin
+          emptyDir: {}
+        - name: custom-tools # Volume untuk menyimpan sops & plugins
+          emptyDir: {}
         - name: sops-age
           secret:
             secretName: sops-age-key
-            optional: true
-
+        - name: cmp-plugin
+          configMap:
+            name: cmp-plugin
       initContainers:
-        - name: download-tools
+        - name: install-tools
           image: alpine:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apk add --no-cache wget tar
-              
-              # Download SOPS v3.9.0
+              apk add --no-cache ca-certificates wget tar
               wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64
-              chmod 755 /custom-tools/sops
-              
-              # Download helm-secrets v4.6.0
+              chmod +x /custom-tools/sops
               wget -O /tmp/helm-secrets.tar.gz https://github.com/jkroepke/helm-secrets/releases/download/v4.6.0/helm-secrets.tar.gz
-              mkdir -p /custom-tools/helm-plugins/helm-secrets
-              tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins/helm-secrets
-              
-              # Ensure permissions for the argocd user (uid 999)
-              chmod -R 755 /custom-tools
+              mkdir -p /custom-tools/helm-plugins
+              tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins
           volumeMounts:
-            - mountPath: /custom-tools
-              name: custom-tools
-
+            - name: custom-tools
+              mountPath: /custom-tools
       containers:
         - name: argocd-repo-server
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir
-
+              name: plugins-dir # Gunakan volume berbeda
         - name: helm-secrets
           image: quay.io/argoproj/argocd:v2.11.0
           command: ["/bin/sh", "-c"]
           args:
             - |
               export PATH=$PATH:/custom-tools
-              # Start the CMP server using the binary from the image, NOT from /var/run
               argocd-cmp-server --loglevel debug
           env:
-            - name: HELM_PLUGINS
-              value: /custom-tools/helm-plugins
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
+            - name: HELM_PLUGINS
+              value: /custom-tools/helm-plugins
+            - name: SOPS_BINARY
+              value: /custom-tools/sops
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir
+              name: plugins-dir # Gunakan volume berbeda
             - mountPath: /custom-tools
               name: custom-tools
             - mountPath: /home/argocd/cmp-server/config/plugin.yaml
