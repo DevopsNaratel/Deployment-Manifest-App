@@ -20,6 +20,8 @@ spec:
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: var-files
         - name: helm-secrets
           image: devopsnaratel/argocd-sidecar-plugin:v1
           command:
