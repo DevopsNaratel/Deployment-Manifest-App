@@ -10,11 +10,31 @@ data:
       name: helm-secrets
     spec:
       allowConcurrency: true
-      # CHANGE: Use a command that always succeeds to force-enable the plugin
       discover:
         find:
           command: ["sh", "-c", "echo 'ok'"]
       generate:
         command: ["/bin/sh", "-c"]
-        args: ["export PATH=$PATH:/custom-tools && export HELM_PLUGINS=/custom-tools/helm-plugins && helm secrets template . -f $HELM_VALUES"]
+        args:
+          - |
+            export PATH=$PATH:/custom-tools
+            export HELM_PLUGINS=/custom-tools/helm-plugins
+            
+            # Debug: Print what we are doing
+            echo "Decrypting $HELM_VALUES..." >&2
+            
+            # Decrypt the values file. 
+            # We use 'helm secrets decrypt' which is simpler than the template wrapper.
+            # We output to a local file 'values.dec.yaml'
+            helm secrets decrypt "$HELM_VALUES" > values.dec.yaml
+            
+            # Check if decryption worked
+            if [ ! -s values.dec.yaml ]; then
+              echo "Error: Decrypted file is empty or missing!" >&2
+              exit 1
+            fi
+            
+            # Run standard Helm Template
+            # We use the decrypted file
+            helm template . -f values.dec.yaml
       lockRepo: false
