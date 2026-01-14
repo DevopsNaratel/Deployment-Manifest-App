@@ -9,7 +9,9 @@ spec:
       volumes:
         - name: var-files
           emptyDir: {}
-        - name: plugins-dir # VOLUME BARU KHUSUS SOCKET
+        - name: plugins-dir
+          emptyDir: {}
+        - name: custom-tools # Volume untuk menyimpan sops & plugins
           emptyDir: {}
         - name: sops-age
           secret:
@@ -17,41 +19,55 @@ spec:
         - name: cmp-plugin
           configMap:
             name: cmp-plugin
+      
+      initContainers:
+        - name: install-tools
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              # Install SOPS
+              wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64
+              chmod +x /custom-tools/sops
+              
+              # Install Helm Secrets (Download plugin tarball)
+              wget -O /tmp/helm-secrets.tar.gz https://github.com/jkroepke/helm-secrets/releases/download/v4.6.0/helm-secrets.tar.gz
+              mkdir -p /custom-tools/helm-plugins/helm-secrets
+              tar -zxf /tmp/helm-secrets.tar.gz -C /custom-tools/helm-plugins/helm-secrets
+          volumeMounts:
+            - name: custom-tools
+              mountPath: /custom-tools
+
       containers:
         - name: argocd-repo-server
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir # PISAHKAN KE VOLUME BARU
+              name: plugins-dir
+        
         - name: helm-secrets
-          image: devopsnaratel/argocd-sidecar-plugin:v1
-          # ... (sisanya tetap sama)
-          volumeMounts:
-            - mountPath: /var/run/argocd
-              name: var-files
-            - mountPath: /home/argocd/cmp-server/plugins
-              name: plugins-dir # PISAHKAN KE VOLUME BARU
-            # ... (mount sops dan config tetap)        - name: helm-secrets
-          image: devopsnaratel/argocd-sidecar-plugin:v1
-          command:
-            - "/bin/sh"
-            - "-c"
+          image: quay.io/argoproj/argocd:v2.11.0 # GUNAKAN IMAGE RESMI
+          command: ["/bin/sh", "-c"]
+          args:
             - |
-              if [ ! -f /home/argocd/cmp-server/config/plugin.yaml ]; then
-                exit 1
-              fi
+              # Tambahkan path tools ke PATH sistem
+              export PATH=$PATH:/custom-tools
               argocd-cmp-server --loglevel debug
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /helm-secrets/keys.txt
             - name: HELM_PLUGINS
-              value: /usr/local/share/helm/plugins
+              value: /custom-tools/helm-plugins # Arahkan ke folder hasil download
+            - name: SOPS_BINARY # Beri tahu helm-secrets lokasi SOPS
+              value: /custom-tools/sops
           volumeMounts:
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
-              name: var-files
+              name: plugins-dir
+            - mountPath: /custom-tools
+              name: custom-tools
             - mountPath: /home/argocd/cmp-server/config/plugin.yaml
               subPath: plugin.yaml
               name: cmp-plugin
