@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sts-{{ include "base-chart.name" . }}
+  namespace: {{ if eq .Values.app.env "testing" }}testing{{ else }}{{ .Values.app.id }}-{{ .Values.app.name }}{{ end }}
   labels:
     {{- include "base-chart.labels" . | nindent 4 }}
     {{- if .Values.backup }}
@@ -32,7 +33,6 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: {{ .Values.service.port }}
-        # PAKAI INI BIAR SAMA DENGAN APP
         envFrom:
         - secretRef:
             name: secret-{{ include "base-chart.name" . }}

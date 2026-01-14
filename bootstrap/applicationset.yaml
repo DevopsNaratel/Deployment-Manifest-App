@@ -27,7 +27,12 @@ spec:
               value: '../{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{.namespace}}'
+        # Logic: if path contains 'testing', use 'testing' namespace. 
+        # Otherwise, use the dynamic name. 
+        # But wait, ApplicationSet doesn't know 'app.id' easily from the filename.
+        # BEST PRACTICE: Let the Helm Template decide the namespace (as we just did),
+        # but ArgoCD still needs a destination namespace to track the App object.
+        namespace: '{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}'
       syncPolicy:
         automated:
           prune: true
