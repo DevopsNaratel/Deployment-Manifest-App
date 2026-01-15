@@ -1,26 +1,21 @@
 namespace: prod
 controllerType: Deployment
-
 app:
-  id: "001"
-  name: "todoapp"
-  env: "prod"
-
+  id: '001'
+  name: todoapp
+  env: prod
 image:
-  repository: "devopsnaratel/todo-app-php"
-  tag: "build-3-bea2047-dev"
-
+  repository: devopsnaratel/todo-app-php
+  tag: build-3-bea2047-dev
 service:
   port: 80
   targetPort: 80
-
 backup:
   enabled: true
-  type: "postgres"
-
+  type: postgres
 ingress:
   enabled: true
-  className: "nginx"
+  className: nginx
   hosts:
-    - host: "k8s-03.naratel.net.id"
+    - host: k8s-01.naratel.net.id
       path: /
