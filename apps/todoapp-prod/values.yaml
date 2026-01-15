@@ -1,0 +1,48 @@
+namespace: prod
+controllerType: Deployment
+app:
+    id: "001"
+    name: todoapp
+    env: prod
+image:
+    repository: devopsnaratel/todo-app-php
+    tag: build-3-bea2047-dev
+service:
+    port: 80
+    targetPort: 3000
+secretData:
+    DB_HOST: ENC[AES256_GCM,data:XjBjtahLOdzMKHKqUmgwxILX,iv:8iAc3jUVq8XARWzHD1FvOZsjOlXZ/m/aHMYEAIvPdzs=,tag:zs4Vu4f2OkCqQewfWAnxLg==,type:str]
+    DB_NAME: ENC[AES256_GCM,data:blfzuOqEBx2TkG6/GVU=,iv:InsolFlLYQk3gr3DH+PC9105KrWGeTItPUlBWLs+iHk=,tag:rRlMzt+ggNBE3lb6sZDYyQ==,type:str]
+    DB_PASS: ENC[AES256_GCM,data:Y11hXVkVG2N5laA=,iv:pdbtww4ziGDmgV4dXe/JrsCGfxyYe81UMG0GPvkM+So=,tag:Hl6kYfhN0/ejKoNvhnQzlw==,type:str]
+    DB_PORT: ENC[AES256_GCM,data:Q1DZmw==,iv:7pJsWDQPMVFjiIp1cCr9gBYBn2sfAIGnEgBT+i8qkGg=,tag:Q4KU+0EcbXVv9uUEeBfJew==,type:str]
+    DB_USER: ENC[AES256_GCM,data:Hw4zkT4puuTa4QFP7LHQvQ==,iv:Bx4fFvPZgup1rCK8rnJ4Kdwi8mZI5c1ILqtwKoBM03U=,tag:yVTiYmWU6FopmetSm3IiYw==,type:str]
+    DB_PASSWORD: ENC[AES256_GCM,data:ZaE/d6PabtGYFWx2b/KR7sc=,iv:lQrnWOFoKOGFuuEX0ceULqgIjUeuFytfhb3nWCCenNQ=,tag:0mud47VPhZ+eRcbwiGXdKw==,type:str]
+backup:
+    enabled: true
+    type: postgres
+ingress:
+    enabled: true
+    className: nginx
+    hosts:
+        - host: k8s-03.naratel.net.id
+          path: /
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA2dGw5T2phK1hkWFBRY3Rs
+            SjhQMFlwSTFTRFR1bEdSSmJ2MjNuNG4xSDFFCnQ3eGJOQVdEd1ZZREVvNklodWQ0
+            V1ZhZWh2S3ZTc25OQkpwM01qWEtkR3MKLS0tIDJvNS9xenZUMXRZRFB1SXFkR0pi
+            aUdUTDJEOVJCWDkvbFNmTDlBZDdocU0K6hNCuHg6Ny9LBmlRdBapr6mzba9xzxca
+            kp4em6ehRPo7Fqbb37OJRT4BiB6QY3sAc08+ZLGT/Agp3DkvnUES/Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T03:15:17Z"
+    mac: ENC[AES256_GCM,data:P9MBu31mXL7QyYvJ3FjF0OUFJvgMNkwmihRlRI8rGHbLMHCrhiSZnNnFRsFB7KxJlBeguX6MGk+IevKBMAR3Zz9SO/znE2BIzbtBSs/LpxMD0mjMmZrzXQnTSvPffuOkcDIbTePtIVL6CYo8i6b6z3yqbpVsT4m7ui67Nyty60A=,iv:NbLo0kmP11L3jcOyCVB/J3rLbNCPkr8p4z0a6anUI2E=,tag:riunQDD61cHoXCNlr0s/Lg==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0
