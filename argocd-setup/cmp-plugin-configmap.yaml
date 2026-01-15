@@ -12,8 +12,6 @@ data:
       allowConcurrency: true
       discover:
         find:
-          # Force discovery to ALWAYS TRUE.
-          # We handle the non-helm apps in the generate phase.
           command: ["sh", "-c", "echo ok"]
       generate:
         command: ["/bin/sh", "-c"]
@@ -22,40 +20,53 @@ data:
             export PATH=$PATH:/custom-tools
             export SOPS_AGE_KEY_FILE=/helm-secrets/keys.txt
             
-            VALS_FILE=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
+            # 1. Get Values Files (Space separated string)
+            VALS_LIST=${ARGOCD_ENV_HELM_VALUES:-$HELM_VALUES}
             
-            # --- FALLBACK FOR ROOT-APP (No Values File) ---
-            if [ -z "$VALS_FILE" ]; then
-              echo "DEBUG: No HELM_VALUES set. Assuming Directory mode." >&2
-              
-              # If Chart.yaml exists, try helm template without values (unlikely for root-app but safe)
+            # --- FALLBACK (No Values) ---
+            if [ -z "$VALS_LIST" ]; then
               if [ -f "Chart.yaml" ]; then
                  helm template .
                  exit 0
               fi
-              
-              # Otherwise, cat all yaml files (Directory App simulation)
-              # Only cat if files exist to avoid error
               if ls *.yaml >/dev/null 2>&1; then
-                # awk logic to ensure separators between files if needed, or just cat
-                # Simple cat is usually enough for single file or well-formed yamls
                 cat *.yaml
-              else
-                echo "DEBUG: No YAML files found." >&2
               fi
               exit 0
             fi
-            # ----------------------------------------------
             
-            # --- NORMAL FLOW FOR CHILD APPS ---
-            echo "Decrypting $VALS_FILE using direct SOPS binary..." >&2
+            # --- BUILD HELM ARGS ---
+            HELM_ARGS=""
             
-            /custom-tools/sops --decrypt --ignore-mac "$VALS_FILE" > values.dec.yaml
+            for file in $VALS_LIST; do
+               # Handle relative paths from base-chart context
+               
+               if [ ! -f "$file" ]; then
+                  echo "Warning: File $file not found, skipping." >&2
+                  continue
+               fi
+
+               # Check if file is SOPS encrypted
+               if grep -q "sops:" "$file"; then
+                   echo "Decrypting $file..." >&2
+                   # Create a unique temp file name
+                   # We use basename to avoid directory issues in temp filenames
+                   safe_name=$(basename "$file")
+                   DEC_FILE="/tmp/${safe_name}.dec.yaml"
+                   
+                   /custom-tools/sops --decrypt --ignore-mac "$file" > "$DEC_FILE"
+                   if [ $? -eq 0 ]; then
+                      HELM_ARGS="$HELM_ARGS -f $DEC_FILE"
+                   else
+                      echo "Error decrypting $file" >&2
+                      exit 1
+                   fi
+               else
+                   echo "Using plaintext $file..." >&2
+                   HELM_ARGS="$HELM_ARGS -f $file"
+               fi
+            done
             
-            if [ $? -ne 0 ]; then
-               echo "ERROR: SOPS Decryption failed" >&2
-               exit 1
-            fi
-            
-            helm template . -f values.dec.yaml
+            echo "Running: helm template . $HELM_ARGS" >&2
+            helm template . $HELM_ARGS
       lockRepo: false
