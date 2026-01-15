@@ -12,12 +12,5 @@
     "image": "devopsnaratel/todo-app-php:build-3-bea2047-dev",
     "db": "postgres",
     "createdAt": "2026-01-15T06:10:55.779Z"
-  },
-  {
-    "id": "003",
-    "name": "appketiga",
-    "image": "devopsnaratel/todo-app-php:build-3-bea2047-dev",
-    "db": "postgres",
-    "createdAt": "2026-01-15T06:11:00.767Z"
   }
 ]
