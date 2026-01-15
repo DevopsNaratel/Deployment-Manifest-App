@@ -13,7 +13,9 @@ spec:
       - path: "apps/**/values.yaml"
   template:
     metadata:
-      name: '{{.path.basename}}'
+      name: "{{.path.basename}}"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       source:
@@ -24,18 +26,15 @@ spec:
           name: helm-secrets
           env:
             - name: HELM_VALUES
-              value: '../{{.path.path}}/{{.path.filename}}'
+              value: "../{{.path.path}}/{{.path.filename}}"
       destination:
         server: https://kubernetes.default.svc
-        # Logic: if path contains 'testing', use 'testing' namespace. 
-        # Otherwise, use the dynamic name. 
-        # But wait, ApplicationSet doesn't know 'app.id' easily from the filename.
-        # BEST PRACTICE: Let the Helm Template decide the namespace (as we just did),
-        # but ArgoCD still needs a destination namespace to track the App object.
-        namespace: '{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}'
+        namespace: "{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}"
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - PrunePropagationPolicy=background
+          - PruneLast=true
