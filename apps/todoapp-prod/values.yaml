@@ -11,7 +11,11 @@ service:
     port: 80
     targetPort: 80
 secretData:
-    NEW_KEY: ENC[AES256_GCM,data:c7wp,iv:CunVsmYrVGUJxfWIF0sY8CjHLjWKGbTCzkxhhk0ql7I=,tag:gqRRTIXh9OngD3I6TNY6IA==,type:str]
+    DB_HOST: ENC[AES256_GCM,data:M56nZBm3OHrLH3aFR2+l6ok93Ue44yUm,iv:lqF6FUFQisXLElEzc2FWez4qS6kqsGPgQylAlgHaehk=,tag:IhPu0JBg9dxcT/+a3DsQVw==,type:str]
+    DB_NAME: ENC[AES256_GCM,data:Pp/3MEcB8vb7NgY/ljA=,iv:Pmn5ym4ee5kXcX4CYBloK6tmuAtTgyyjWeXMTtPCgGs=,tag:wrORbQlofMjNch0Z75YRmg==,type:str]
+    DB_PASS: ENC[AES256_GCM,data:p8hajLW0uWhsYVc=,iv:Kw02gJ4EXlww727Kg/NW5oDRjrZJxdt6KXLt2JWLlSs=,tag:4XlOgx3UxVM0I7FX3bUEUQ==,type:str]
+    DB_PORT: ENC[AES256_GCM,data:9V7ZgA==,iv:oMkanUCWyCzjm2vhLlFL/4BRS9PaGAiHvTenHXY+eE4=,tag:YmJZ1zpZbU5nA1nxipWUpA==,type:str]
+    DB_USER: ENC[AES256_GCM,data:LWuEGMZQugnJoh4YzZD9KQ==,iv:6Xcoa+9Tr7vpo6PLB7OsuBipPwprOw0N/ejWevcXr7I=,tag:dsLfCU4rS1rc3v8VgOYUtQ==,type:str]
 backup:
     enabled: true
     type: postgres
@@ -30,14 +34,14 @@ sops:
         - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWR1VQTDQvN2FGaTNvREJY
-            SXI5NXhBSTRmeWxCNFFpNW9aRE1hOEROS3pFCjhpc1plRjlxOFRRcFpSUCszaHF3
-            TWxuaXZyVkpPSTR3S0hqcGFYN1B0TjQKLS0tIDA3aXUyYlFSNDE1VHJDMW96RkVK
-            a21WSU1jQmxDM0doOGpsa1dHdkdPUmcKC3NgKuKGJUU7Gwq7CsjpfDQihLRmYe2z
-            i+JQIsF536/kYJ2SlkKLjpEmL940UozsOQtmpw3xPEG1F3roiYWgfw==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2SWFCUVRQc0ZzRzVwNG03
+            enQxMlpVNHM4YzhwdUU4UVJnalorcnlTd0RrCmNoR0NMNE5xeTllS2x5aG9LSjdl
+            MG1Xc1cxdzFCdUh1c1lUVHVXRUliTTQKLS0tIHpLbUlNb1lRS2c5U051ak1TYWov
+            UDUwbEloLy8yWDV6N3U3Qkxrd3Z3ancKSwlIffK3a0UvVifv4RN6sLs32ioBfh/L
+            ZLMg0V5SdZB/4IsI+xDaLYGmGuWoh+mA+LzM4+McBf/0/atyx7gHjQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-01-15T07:48:36Z"
-    mac: ENC[AES256_GCM,data:+lZvIKbWUqrgv+1oDhxusAs+fCoo7Q08WM7q28xF6YkS/28vz86zGoz7d2qvA/+SdH4EVSfk5Ok9eAScApF0kl8LBTcQ0FdxFJpmSE+KRU/jpXnZCZBp/MYODBr/w/c8cVco3F/isNvl6if/objh6hLzWu6zN8EJOFDcu67bDnE=,iv:FxWtNnMIrTNvS87HAZZ+GQB4LTv2N7x0AzxDIMqB/7c=,tag:piPI1pYz41sWr+QL+Vx3sw==,type:str]
+    lastmodified: "2026-01-15T07:50:57Z"
+    mac: ENC[AES256_GCM,data:7d2IE9FuUpwBFWALVe1NmiAEqxSK95KKDaFQ5t1p7RsALC+9cil4/0b8ZcdKPxSsyXjm6Oxvvw4msVpK+2EZewMpNs/jtw4Ae+35Pd7yOGdBZKEARz/gMuA9NlGhzcY3HfuYXyr36OwpPnta5xztoec1wuVPTyRdCt3W8F0Spos=,iv:wOLYLDziSS0Nwy94p9VM6Q+LPIg5jbw3lytM4dkwh0o=,tag:a/a/1GQCs5kpmwnRkxtvOQ==,type:str]
     pgp: []
     encrypted_regex: ^(secretData)$
     version: 3.9.0
