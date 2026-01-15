@@ -1,27 +1,42 @@
 namespace: prod
 controllerType: Deployment
-
 app:
-  id: "003"
-  name: "appketiga"
-  env: "prod"
-
+    id: "003"
+    name: appketiga
+    env: prod
 image:
-  repository: "devopsnaratel/todo-app-php"
-  tag: "build-3-bea2047-dev"
-
+    repository: devopsnaratel/todo-app-php
+    tag: build-3-bea2047-dev
 service:
-  port: 80
-  targetPort: 80
-
+    port: 80
+    targetPort: 80
 secretData:
-  DB_HOST: "svc-appketiga-db-003"
-  DB_NAME: "todoapp_php_db"
-  DB_PASS: "buattesting"
-  DB_PORT: "5432"
-  DB_USER: "postgres-testing"
-  DB_PASSWORD: "changeme_securely"
-
+    DB_HOST: ENC[AES256_GCM,data:UAJIpmF541R3ZFVHa9LPvThPFIc=,iv:tdmNY/t1YfB9Wu/W5kHa5oVT8g00ltdTtaV7zcfLGpY=,tag:X0/aZjqdci2jSQIR5t/wsQ==,type:str]
+    DB_NAME: ENC[AES256_GCM,data:8tqpB24bebGqgcUcTOQ=,iv:sf5u5rnhYN8kABVaAPyYRfoPhv70p1fhgr7Ke6KSmWQ=,tag:gLJ1bxvL4xiJqjlhjPfBQQ==,type:str]
+    DB_PASS: ENC[AES256_GCM,data:4vlARWzXdvHY8ZM=,iv:WYZ67/0f4lZtX65G3/xOvUSCDQLXCkiOQz74eJy6/Ko=,tag:OITX09v1du4t3yrGyDii2A==,type:str]
+    DB_PORT: ENC[AES256_GCM,data:gEeVqw==,iv:wqKDL2uROZ34PCfH7D8J0/8kMP0dBYLU98+kt1ZsHI4=,tag:cwcg+8SwKo0UhrqV3EvI+Q==,type:str]
+    DB_USER: ENC[AES256_GCM,data:FznYY+eFbpVQDGrAsEzzgQ==,iv:OVrp/WdoH/dssDeHPymUzDdga5oA3UHu60WqZqPv+b0=,tag:iZnN/kpCOdMYAVKgXisIBA==,type:str]
+    DB_PASSWORD: ENC[AES256_GCM,data:Yty09npW7H3suwR5An4SmLg=,iv:dL/2JrQPOO0Z3WVuYlSPE2PT0JNLCmEOO0aDSrLPfcU=,tag:m8ZgjLZqjnDFwLSthIjPUw==,type:str]
 backup:
-  enabled: true
-  type: "postgres"
+    enabled: true
+    type: postgres
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLR0VjUEFkOWt4SHRTdFZh
+            em5yazh2ZVVoTWV5ZTVabFlVRjh5b24vTm1BCnNzSHc3OVA0YXhMOFhqcEFKb0Ju
+            ZHZGVW5mQ3JZUEZqVmE4YWkvanF4UDQKLS0tIDYxOVduRDM1Sm1qUG0zbzg1ckFs
+            OHViR0NTZG1BczdNVmIxWkxrV3o1RlEKT4pi9ToHyTZGJjDWiyN/hJm4+Ex82G28
+            6vzxBCTJ447Wn/NQ3jkbs3ve03qoINg95zHf4hchfmG72IB4kMB+/A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T06:11:00Z"
+    mac: ENC[AES256_GCM,data:usebhndHuJI4lalU5kKXlLa0mO6a5CGte/wI/SnMh/Rf/Fh5LatmCqqOTahGVIQOwETh7deXPffZeqqCGx8nQi8J7V4bFogCE1FiVrGEpWftNZymKLw/8N25OTFlIakH0UV9wFWeoKvO0nrQIiFrrjsItS1RONIb2TaR3fiPYfk=,iv:rbFdb8xP8xVBLpd4WuTTZ0PNKLnMSBOIPIFz5BAnVyI=,tag:VxEElv1yVdC7EMaGjBd7Jw==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0

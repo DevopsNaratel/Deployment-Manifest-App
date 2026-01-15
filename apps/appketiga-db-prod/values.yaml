@@ -1,24 +1,39 @@
 namespace: prod
 controllerType: StatefulSet
-
 app:
-  id: "003"
-  name: "appketiga-db"
-  env: "prod"
-
+    id: "003"
+    name: appketiga-db
+    env: prod
 image:
-  repository: "postgres"
-  tag: "15-alpine"
-
+    repository: postgres
+    tag: 15-alpine
 service:
-  port: 5432
-  targetPort: 5432
-
+    port: 5432
+    targetPort: 5432
 secretData:
-  POSTGRES_DB: "todoapp_php_db"
-  POSTGRES_USER: "postgres-testing"
-  POSTGRES_PASSWORD: "buattesting"
-
+    POSTGRES_DB: ENC[AES256_GCM,data:104h32s0kuNF5VO5YL4=,iv:UtfTkCImePU+0zV6ILnSELzhfxWykiiUaBNvATdEZN4=,tag:9hfxKOiEoj2xaYo4i9kvnQ==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:iGijVdYDZhMvQiF7eLFzIw==,iv:IozmdB2g0/UHkv39os/ZGqPd5f87mXEg/BDBrakZL+M=,tag:MvkA/YEX/qqYe5/zQDE5Pg==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:0uk8ogmnnY1+19c=,iv:26ljWT9yHppTaAebPhuZjIAgZimiv08qTNDCPx/GTRw=,tag:9cpDYbVPOol1KKUN4NSzbg==,type:str]
 backup:
-  enabled: true
-  type: "postgres"
+    enabled: true
+    type: postgres
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBpUmZNeCsyUWpoVXZ6Y1hq
+            MzBYVjdYQm5aMGJ5UFJ6UDJhQk1scnhvd2swCnlwVncxRE5YV0s0eld0RjNyUUJU
+            NFZQM21TUWpWN2lGNEJHak4vRGtMWlkKLS0tIFp0SWNjdWJwZHdrcWxNTW9oU2RM
+            L3h2eXh6L3RHdWZURlBLZm9rVkNpbGsKzawbyaLd/YhCeyFWoBBHigcVbDfyzEGU
+            R+HSFSnGd7Jmr9qTIa1yj6X9wrPhxBJ5VWAtGbgpZ4ki9TDOhuzMgA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T06:11:00Z"
+    mac: ENC[AES256_GCM,data:XtswwieOhrXFjKbELZWuzZieiWTMp9nTGlq1Q/YtbWkLfndnxS0Lt7bCIefOVLRBhkQ7wNC9R6FfyKZzF6Qlb71QdPvlH2j7ND8jFxr29TN2wCQanrTArFSZKMseh5xZpQ2RnDDbkoD+4oJNAwZslahwTYzDcJnacDGm7GK2FA0=,iv:7t7O/17DIJK0NSusAT9SKC/BLHDQtVKLTF/p1P8Us+s=,tag:4iFnzXqmBIZtaUQB8GdYFw==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0

@@ -1,20 +1,36 @@
 namespace: testing
 controllerType: StatefulSet
-
 app:
-  id: "003"
-  name: "appketiga-db"
-  env: "testing"
-
+    id: "003"
+    name: appketiga-db
+    env: testing
 image:
-  repository: "postgres"
-  tag: "15-alpine"
-
+    repository: postgres
+    tag: 15-alpine
 service:
-  port: 5432
-  targetPort: 5432
-
+    port: 5432
+    targetPort: 5432
 secretData:
-  POSTGRES_DB: "todoapp_php_db"
-  POSTGRES_USER: "postgres-testing"
-  POSTGRES_PASSWORD: "buattesting"
+    POSTGRES_DB: ENC[AES256_GCM,data:+bScovtsQhcaHJD0yPM=,iv:DH0V2yO1rvmNZegEA9dOXnBNN5WUPOOWJFj8rW8n6EA=,tag:eq51DjYQvTiEFCjw4Nu7Tg==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:AKuYQiSfEBmS1XF3h437fQ==,iv:/5GAbp6bnQcl8Tq1xnlJ+nXnGyoN1qgRSETIL3X3c3M=,tag:LkOlO26B8keSunHDetpHBg==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:bcwrLPitNu2f8ww=,iv:N0P3jP+w9qFf/8cdkegdKUSVyZX19y3ZsZX0uVETsGU=,tag:a8wQvTWBxzYfiDACw00OaQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvS3hCdXhpQ3k5OGxkSmw4
+            TzZka2huRFNmZm5ZcmpVR2VRczZQbUkybTJjCitXSVZVNjZjcEJTN3hZbnZERUtJ
+            eGpFVmc2Sy9iY1FTcEZnT1BBUzlMcjQKLS0tIHhtQXFoSnBtSDVyTGV3Z1RBV2xn
+            aFpOakI5dW1vbXFKSnlqOHZTRjB3amcKyb1Hsb1It1OqWIELagj5CcpGYEYMeh0d
+            Q3CRCu/qHj1gsWNn3BJDDAhmwiZ2h6kiwGbaUI6OHcaQOz1AJnV+XA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T06:11:00Z"
+    mac: ENC[AES256_GCM,data:WqLA0Qwex6mk991zAvy3vw4x+c/IVSFRbAbEWLlyp4hGf1Ewo9OVGAaQoVQo5Vv5uiSJ0iTmE7PXY8silxKFq5NyqVq45dlUI7vwQaVoX5ESsNEMrI2Y9Tb7i+CGTdKL0XQqR6sA/CcvWhiO9NDYRPO1AEhx9qHWzjL8JbikSK8=,iv:TJ7XgqP5figAu6NVItUobg38edo9rilD8aMkpDf7FJU=,tag:0QgCFxwSK6fCZzg0ZgHrQw==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0
