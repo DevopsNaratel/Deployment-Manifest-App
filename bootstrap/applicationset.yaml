@@ -29,7 +29,7 @@ spec:
               value: "../{{.path.path}}/{{.path.filename}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}"
+        namespace: "{{if (contains \"testing\" .path.path)}}testing{{else}}production{{end}}"
       syncPolicy:
         automated:
           prune: true
