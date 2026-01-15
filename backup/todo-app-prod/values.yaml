@@ -22,6 +22,12 @@ secretData:
 backup:
   enabled: true
   type: "postgres"
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: todo-app.naratel.id
+      path: /
 sops:
     kms: []
     gcp_kms: []

@@ -18,6 +18,12 @@ secretData:
     DB_USER: ENC[AES256_GCM,data:DnnFN8oOIqk=,iv:m3jnxWaFMoHznWsMLKY6pkdDCcoMgnC8VtxIEXhy4Dg=,tag:u4JtLjUtWzKNvFBL6Y+EEw==,type:str]
     DB_PASSWORD: ENC[AES256_GCM,data:WJiJlXJTE2dggMk=,iv:nHoxUzU/sXWSA8fK02Sm9kpixDMZPQubDqokYa9asbM=,tag:qS9F3sZ6K/+EEgZ56+d4cg==,type:str]
     PORT: ENC[AES256_GCM,data:CvWMTg==,iv:ATvTOJK7WekjFeot+kC0SZuiJv7KCXBVknYV10rRByk=,tag:PAIlphI1KcUuwQclUwwOyw==,type:str]
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: todo-app-testing.naratel.id
+      path: /
 sops:
     kms: []
     gcp_kms: []

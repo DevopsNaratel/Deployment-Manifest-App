@@ -1,0 +1,42 @@
+{{- if .Values.ingress }}
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-{{ include "base-chart.name" . }}
+  namespace: {{ if eq .Values.app.env "testing" }}testing{{ else }}{{ .Values.app.id }}-{{ .Values.app.name | replace "-db" "" }}{{ end }}
+  labels:
+    {{- include "base-chart.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    # Contoh default annotation (bisa di-override dari values)
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: {{ .Values.ingress.className | default "nginx" }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - path: {{ .path | default "/" }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: svc-{{ include "base-chart.name" $ }}
+                port:
+                  number: {{ $.Values.service.port }}
+    {{- end }}
+{{- end }}
+{{- end }}
