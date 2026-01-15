@@ -10,13 +10,7 @@ image:
 service:
     port: 80
     targetPort: 80
-secretData:
-    DB_HOST: ENC[AES256_GCM,data:TW5MbVv+2NkQbCXbZE3m3W0l,iv:LON6BH2suczguu7BGa6ToQ3u4sg0jADkHOlwr5aNLsI=,tag:PNPSyIGLZN8RV3Tb2I65sA==,type:str]
-    DB_NAME: ENC[AES256_GCM,data:BwI8q5cGxGomk9lYFWY=,iv:DkWZNiZI82AgNkdt8KayFhS1JDmkXN8BjV1HcRar43U=,tag:5ythMHcaCSJFdmpT+jEqIA==,type:str]
-    DB_PASS: ENC[AES256_GCM,data:/TZOBpOrJUsjdok=,iv:J7R6aVjLx1Zs0R1o09bOTGYogweVtgc07agtRWn/nIM=,tag:qV4z88ExC3zjigcEruCC+w==,type:str]
-    DB_PORT: ENC[AES256_GCM,data:QW2kNA==,iv:lmUdYekBJVZshgz1j84n804ZV/Np6bVDAU2tPRR9oiQ=,tag:8t9WWRx6t9jmj81sHmemTw==,type:str]
-    DB_USER: ENC[AES256_GCM,data:K2WQKLFYfYAsCDFeKDPz6g==,iv:Vdg3t7SMNCp16SkkJGfZlsYSaXVl1WW+S7Pe+07xpVI=,tag:9FY6hhvX+Xb1gVlwAmZjFA==,type:str]
-    DB_PASSWORD: ENC[AES256_GCM,data:lfw17KMYieS8r3MlYVOim2E=,iv:wQMPqLxjyZbDAIrFktzClDeKDS9YkpMUQrByJHspopI=,tag:d0TWeFxAXJr+kUVx1dy7eA==,type:str]
+secretData: {}
 ingress:
     enabled: true
     className: nginx
@@ -32,14 +26,14 @@ sops:
         - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVRzhkL0xPNWdycUFmRTA2
-            ZitLRkRjMHp3NnhTODVtNU9vVk9vSHVCZWljClNlTXkzQWVETHRyeWdiWDZLdExW
-            NnpSVkJYVmVsZ0FvNVA1ZjBzTW8zK0kKLS0tIGh0VlRqNmk1K3FpOUZtK3F6UXcy
-            UHBxUjBhclczbVljZksxOFBmRVVmbkUK2JCJOnMVEFuccgxQoxcY0UDWXrLQRIXN
-            NRJDcHKBEEbQFS13fYMEPiJLNPpnXqtSEsjDeUG/qM3+qoK6GNcymQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWRGVBOWcvb3dUZTIvaW1t
+            bzU1NnpxbXRpcnhOOGdqczB1NjhabGpoQTI0ClIwSVkyVXZVUUh4OG5ZNHNnRkxL
+            R1N4Rk9XMW01eTROdUxWR1ZTTEYyVnMKLS0tIHFLaUUvSU5jNUNOS3JaRzFrODBR
+            a3dUbUxqTjNkOHZtbDl0M0ZCWkFYbEUK75MvbysEMGhSH/SD4o8ABGltSrr9w/XB
+            JO2nWSs0V2QVTFoPeJhYN98XZpbgSpjcA4ohUldEzmdZ5ygN+HxsLA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-01-15T07:27:57Z"
-    mac: ENC[AES256_GCM,data:P2Q/ltMaeZskzXGTq6CzWguQ9Di6y7dFBgr+0UgA8KBD0GJfXVEFkP8m+cMoKvXTH7oBwPBzXn8+soCMjIHAebm8zZfArRiOAZvirAfW2uW/dYSQkwq7EiwYkHxn3IDX/vYu5i6NXz+PW3k9kB9S2evaEq+732Tyw2eIpEIuKrU=,iv:ZwX/2YTDDqOP3ujIKm0IApGdR+KhmVsGjATncwobTBE=,tag:X4hU5KuwouwJwwICzWUjIg==,type:str]
+    lastmodified: "2026-01-15T07:48:36Z"
+    mac: ENC[AES256_GCM,data:A6WQn2TLoiIMKwZeGUTA0ajOSrocs/MBhvX3fZO+sdF/dsuaKr7JQuU9TyRKfEAdbaaRQ/i5H+dJRHuqD7EXEr5eWgVv0wEzKLFA6JD26O4I0yD61IGk3O/WWEG/fnKTrX79/NLpHNmLe+QyWtQG5TtTIq3ELUI5C679UNliheY=,iv:insBCiVvPBwS07mX4sY2thpVFpMKK59MBZSYL7fR62s=,tag:i7ZTs+8dlbNmc+Rq9Yq5SQ==,type:str]
     pgp: []
     encrypted_regex: ^(secretData)$
     version: 3.9.0

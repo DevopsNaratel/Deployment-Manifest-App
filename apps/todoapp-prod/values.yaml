@@ -11,12 +11,7 @@ service:
     port: 80
     targetPort: 80
 secretData:
-    DB_HOST: ENC[AES256_GCM,data:z494dUKBq+jWoscQgL65+XhQ,iv:E2gc428jc0H4hNBHiJxB5D//untKDeTik7AgRNSIAlc=,tag:CvcCo1i9sda7ljKVBJZxnA==,type:str]
-    DB_NAME: ENC[AES256_GCM,data:Hgi/yJXqGRHNBu5tFQQ=,iv:sMgmeGA9DaKGYWDmtBQDKi0r0tzOIFi08OKuGZWEOwg=,tag:xkGhu/RL0nMkQjcBRAy9vA==,type:str]
-    DB_PASS: ENC[AES256_GCM,data:08TCtiIWgtLdJLg=,iv:0dd7v2QSw9aqk1Y3n95a5g/KXd4vbEgTQ4Puk3Yn4AM=,tag:AIenReha4QJoaK2OG/nJYA==,type:str]
-    DB_PORT: ENC[AES256_GCM,data:UIefKw==,iv:AjLJSBbJQG5bWk1IZXm7RHGGvcuR5s5V26Zy9f1Omro=,tag:TufcyU6sT8oVJGifT/S21w==,type:str]
-    DB_USER: ENC[AES256_GCM,data:obzXKIEfrQ6efYY6pcFsJw==,iv:SguC0TNgHB8pdrA9RO5T8+KT6f7Wdukgc29PVv+5KPw=,tag:kStQhNKYEcSthJI8tOAg6Q==,type:str]
-    DB_PASSWORD: ENC[AES256_GCM,data:WL1rhMB2UEQkSUwJETx632c=,iv:/QOkStIvnllE1Q7+hTAmTK7GiKfgHZQeCv9TeFv7pck=,tag:B+YNOQNsjCFGlO0pcxbRaQ==,type:str]
+    NEW_KEY: ENC[AES256_GCM,data:c7wp,iv:CunVsmYrVGUJxfWIF0sY8CjHLjWKGbTCzkxhhk0ql7I=,tag:gqRRTIXh9OngD3I6TNY6IA==,type:str]
 backup:
     enabled: true
     type: postgres
@@ -35,14 +30,14 @@ sops:
         - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBMnlpT1hWNUpWaFMyektX
-            NFhCUGtqWDFoSzU0YVR2aXJVSmhSVGFKeVJZCmdzZmRqbzIvZkZ5c0xTcHlHSFlm
-            ZC8zLytUZFpUSU1iU2pPb2JWWnV2Y2sKLS0tIFJGbjZMdzVUU08zWHBXQko1em5H
-            bEtleUtzTDFFcWFHYkozUy8yZzFVL28KtXf5UNF2uutTcc1VUDGFaeagDBDwHJlk
-            CiU/pg443oq6k0yurL4pZ2H4yBseHQ3qtWidXRPapXCGTPZL78c70w==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWR1VQTDQvN2FGaTNvREJY
+            SXI5NXhBSTRmeWxCNFFpNW9aRE1hOEROS3pFCjhpc1plRjlxOFRRcFpSUCszaHF3
+            TWxuaXZyVkpPSTR3S0hqcGFYN1B0TjQKLS0tIDA3aXUyYlFSNDE1VHJDMW96RkVK
+            a21WSU1jQmxDM0doOGpsa1dHdkdPUmcKC3NgKuKGJUU7Gwq7CsjpfDQihLRmYe2z
+            i+JQIsF536/kYJ2SlkKLjpEmL940UozsOQtmpw3xPEG1F3roiYWgfw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-01-15T07:27:57Z"
-    mac: ENC[AES256_GCM,data:jVNkR1VgsUW25q18L+pJTdUm4NbxO/oAS98IeF0aw9JBwPB3IeespRXhFCj9BjItctOuq4eU1WDDaKC5b9geqX23F0cS4hijJwV8THdM8r4LKjnSw2ZjakpT9ivGQ0HtGvkvdOem+1L5qRGPECZbv54Fp54jbInt1hkvGQmhCmY=,iv:FMz8bQJSWaIvOeTu4JEVw5TozRcNXDIP4w03gY4SCp8=,tag:UQc3dLuO7nTxSutIOkokkg==,type:str]
+    lastmodified: "2026-01-15T07:48:36Z"
+    mac: ENC[AES256_GCM,data:+lZvIKbWUqrgv+1oDhxusAs+fCoo7Q08WM7q28xF6YkS/28vz86zGoz7d2qvA/+SdH4EVSfk5Ok9eAScApF0kl8LBTcQ0FdxFJpmSE+KRU/jpXnZCZBp/MYODBr/w/c8cVco3F/isNvl6if/objh6hLzWu6zN8EJOFDcu67bDnE=,iv:FxWtNnMIrTNvS87HAZZ+GQB4LTv2N7x0AzxDIMqB/7c=,tag:piPI1pYz41sWr+QL+Vx3sw==,type:str]
     pgp: []
     encrypted_regex: ^(secretData)$
     version: 3.9.0
