@@ -26,7 +26,7 @@ spec:
           name: helm-secrets
           env:
             - name: HELM_VALUES
-              value: '../{{.path.path}}/{{.path.filename}}'
+              value: '../{{.path.path}}/values.yaml ../{{.path.path}}/secrets.yaml'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}'
