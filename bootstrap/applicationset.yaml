@@ -10,10 +10,10 @@ spec:
       repoURL: https://github.com/DevopsNaratel/Deployment-Manifest-App.git
       revision: HEAD
       files:
-      - path: "apps/**/values.yaml"
+      - path: 'apps/**/values.yaml'
   template:
     metadata:
-      name: "{{.path.basename}}"
+      name: '{{.path.basename}}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -26,10 +26,10 @@ spec:
           name: helm-secrets
           env:
             - name: HELM_VALUES
-              value: "../{{.path.path}}/{{.path.filename}}"
+              value: '../{{.path.path}}/{{.path.filename}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{if (contains \"testing\" .path.path)}}testing{{else}}production{{end}}"
+        namespace: '{{if (contains "testing" .path.path)}}testing{{else}}production{{end}}'
       syncPolicy:
         automated:
           prune: true
