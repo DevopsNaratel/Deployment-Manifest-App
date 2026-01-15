@@ -1,0 +1,23 @@
+namespace: testing
+controllerType: Deployment
+
+app:
+  id: "003"
+  name: "appketiga"
+  env: "testing"
+
+image:
+  repository: "devopsnaratel/todo-app-php"
+  tag: "build-3-bea2047-dev"
+
+service:
+  port: 80
+  targetPort: 80
+
+secretData:
+  DB_HOST: "svc-appketiga-db-003"
+  DB_NAME: "todoapp_php_db"
+  DB_PASS: "buattesting"
+  DB_PORT: "5432"
+  DB_USER: "postgres-testing"
+  DB_PASSWORD: "changeme_securely"

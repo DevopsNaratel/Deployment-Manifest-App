@@ -1,0 +1,39 @@
+namespace: testing
+controllerType: Deployment
+app:
+    id: "002"
+    name: appkedua
+    env: testing
+image:
+    repository: devopsnaratel/todo-app-php
+    tag: build-3-bea2047-dev
+service:
+    port: 80
+    targetPort: 80
+secretData:
+    DB_HOST: ENC[AES256_GCM,data:RhMwrq9XYBbT2TDn1UIPzwNJiw==,iv:Hm+HDlOTi4LRh1QSKn3jHnmI7vgMM+P8mEMQtbWYF8w=,tag:8JsIOAplO0PGEXYa3Fv4mg==,type:str]
+    DB_NAME: ENC[AES256_GCM,data:dQ99EulMELqiWZJYPr8=,iv:N7iIDFBUoIm6bx3vVyPSf98sMFiYhWaxsXd/6+nXDUM=,tag:BPTpaGP4b4Wev5BRMS8Peg==,type:str]
+    DB_PASS: ENC[AES256_GCM,data:s30pnykrIHAAmPM=,iv:xCEfc7Xw+lE6uJ5PGiPMcwUWddX/2t5JC/UN3pN3XgY=,tag:ISyguT+wSSFuLZjjoCElfw==,type:str]
+    DB_PORT: ENC[AES256_GCM,data:rVGQgg==,iv:fFJKqoHiCpC8Fn95U5Xideju7u+bg+taZ7Ilhh9ZMr0=,tag:/U6CPN0Jp7T4DwdMUhIwGA==,type:str]
+    DB_USER: ENC[AES256_GCM,data:DY4he+1MWf+85/7HHefj+Q==,iv:/RALVrfUDUb7w9kZsIY05jSExtBs/llObQ+LI26Ycmo=,tag:B3SgUAgJWYB6VD0+s7PaJw==,type:str]
+    DB_PASSWORD: ENC[AES256_GCM,data:vFlX92urEoazyzXY9uY91ak=,iv:E9CzwmG9y+ZlHlJt90ccZ89vUtLDSzqwpc0hl23a3rc=,tag:7wAOKUyLL1BPNxesNWRAzQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBY3EzbVR6NmdMandxVjk1
+            QXdTZzM4Q3NyeXBCYlRKdk4rK2VJNnZsNmpnCnRheEVxT1Y2YTdxSWJzMUE4WFh0
+            MFV4UE1GMFhsL0syaG9kOHBaeVdwdVkKLS0tIEtZVm81NzEvZUhtNXNuclpsV1JQ
+            cjJ6QXgzbUp3bThPSG56dkRUeW5sYU0K6pElR1ktjbx8jgOPWcUnrV76fBQ6muwB
+            n7fEQny4xWbY3bt16+AnkpYYzbEebNoKcfhio+FWyjtNpZ2ARiy+Iw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T06:10:55Z"
+    mac: ENC[AES256_GCM,data:SsLLgs35DOLSQmgJbGdc5gwdow+TzWhWg65VcbzYs/M1C8/WJFh4dBCiB3zF42JOXI4aPv0KiY+nJKDboR61yTcpqDIG63LCDUjO/QPwodVpkgQLeb6Y5LjINfPeMiVDnP7+EJS1+xbnAq1zbiqRMuagjdzg7+COZ5oOqMQivAY=,iv:lD4tfKFjbAxflAXTJ8lzU9pLHfnPKr9rV9qd+AM+rgo=,tag:VLCAZdcXKxtz65UfC4+a7A==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0

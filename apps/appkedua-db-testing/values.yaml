@@ -1,0 +1,36 @@
+namespace: testing
+controllerType: StatefulSet
+app:
+    id: "002"
+    name: appkedua-db
+    env: testing
+image:
+    repository: postgres
+    tag: 15-alpine
+service:
+    port: 5432
+    targetPort: 5432
+secretData:
+    POSTGRES_DB: ENC[AES256_GCM,data:XvGoxit1VOaDDumWgQc=,iv:pJWJcgO9F4MutjHwbpZEm1XdeZVmyzEqhpCwF3j0D2c=,tag:lhxI7vep8UbeW/SXHA3VoQ==,type:str]
+    POSTGRES_USER: ENC[AES256_GCM,data:zgUIHw==,iv:2NPGddwUKv5CVt8jUoy34pRsL9GKc2OEHWzkrOelHIc=,tag:xDJGiT6g/p4133/PbH/Oiw==,type:str]
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:/TffQXZT3jnI8B0=,iv:/vmrL1J9XHVtnC0pj+ykP251Eyn3AsCcctdvpjxqKAA=,tag:E1te4fBYedI9IqXX61b/iQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ywhtcmyuhmfa32kfaaxcak4dvq27q9g6m55gqlzu2vlwkgfj24wq3g4ejx
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4MWpNN3hXU3NFVmwzeXdV
+            WG5IekVzd09vUk04d3VPV0pXcFNPcDBFRFZZCmdnbWNLOWRFcC9kRzN3M3hWb0pK
+            bElVbHh4ZTB6NnJjMUVoTzFUQks2NFkKLS0tIGs0Q0k0dWVoNlphSzE3NFdhTnBz
+            b2JtcmNwbUZJR2szTmoreDJXdERBc1EKweklAcP8w6e9k4euryuNg6Hq2XDtmruu
+            bC+LODP6iKyf3ux7BMm3epjF3cQXgHbT2vHhR149iojIDYakH/nYww==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T06:10:55Z"
+    mac: ENC[AES256_GCM,data:1ankZUW9GljQf7Ux+olBbRs87utaLWuJqvW0JUh+yHJOSrGih0iRQGXVkdaeS0adGw35Maju/V11mtjX2XEzDtgDEXx2zgUJYllZSSEN/Pa7sEqvQoMca+iD8YCNE6LsxjvCx28VoSgOuqfKSyU5IdkOkunvIXYP8EEA76ATV64=,iv:TEAkMcE5kdUFpvdDfYqgf9xkmsv8EpiaN5wLrsWbRI4=,tag:tstDHOoo2wQX/epBUk9cvg==,type:str]
+    pgp: []
+    encrypted_regex: ^(secretData)$
+    version: 3.9.0

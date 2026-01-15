@@ -1,0 +1,24 @@
+namespace: prod
+controllerType: StatefulSet
+
+app:
+  id: "003"
+  name: "appketiga-db"
+  env: "prod"
+
+image:
+  repository: "postgres"
+  tag: "15-alpine"
+
+service:
+  port: 5432
+  targetPort: 5432
+
+secretData:
+  POSTGRES_DB: "todoapp_php_db"
+  POSTGRES_USER: "postgres-testing"
+  POSTGRES_PASSWORD: "buattesting"
+
+backup:
+  enabled: true
+  type: "postgres"
