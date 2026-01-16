@@ -25,7 +25,7 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: {{ .Values.service.port }}
-        # --- FIX: Cek Kesiapan Database ---
+        # --- FIX: Cek Kesiapan Database agar Service tidak mengirim traffic prematur ---
         readinessProbe:
           exec:
             command:
@@ -42,7 +42,7 @@ spec:
             - {{ .Values.postgresUser | default "postgres" }}
           initialDelaySeconds: 15
           periodSeconds: 20
-        # -----------------------------------
+        # ----------------------------------------------------------------------------
         envFrom:
         - secretRef:
             name: secret-{{ include "base-chart.name" . }}
