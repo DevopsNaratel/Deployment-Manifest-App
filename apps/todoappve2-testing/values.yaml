@@ -1,0 +1,26 @@
+namespace: testing
+controllerType: Deployment
+
+app:
+  id: "002"
+  name: "todoappve2"
+  env: "testing"
+
+image:
+  repository: "devopsnaratel/todo-app-php"
+  tag: "build-3-bea2047-dev"
+
+service:
+  port: 80
+  targetPort: 80
+
+backup:
+  enabled: true
+  type: "postgres"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: "test-k8s-03.naratel.net.id"
+      path: /
