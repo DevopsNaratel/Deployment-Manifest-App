@@ -17,5 +17,5 @@ ingress:
   enabled: true
   className: nginx
   hosts:
-    - host: k8s-03.naratel.net.id
+    - host: k8s-02.naratel.net.id
       path: /
