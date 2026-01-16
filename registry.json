@@ -1,12 +1,5 @@
 [
   {
-    "id": "001",
-    "name": "todoapp",
-    "image": "devopsnaratel/todo-app-php:build-3-bea2047-dev",
-    "db": "postgres",
-    "createdAt": "2026-01-16T07:22:13.016Z"
-  },
-  {
     "id": "002",
     "name": "todoappve2",
     "image": "devopsnaratel/todo-app-php:build-3-bea2047-dev",
