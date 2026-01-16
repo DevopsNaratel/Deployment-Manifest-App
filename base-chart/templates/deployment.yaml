@@ -19,6 +19,16 @@ spec:
       labels:
         {{- include "base-chart.labels" . | nindent 8 }}
     spec:
+      # --- FIX: Menunggu Database Siap (Dinamis) ---
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.28
+          envFrom:
+            - secretRef:
+                name: secret-{{ include "base-chart.name" . }}
+          # Hanya jalankan nc jika DB_HOST ada isinya
+          command: ['sh', '-c', "if [ -n "$DB_HOST" ]; then until nc -zv $DB_HOST ${DB_PORT:-5432}; do echo waiting for database $DB_HOST; sleep 2; done; fi"]
+      # ---------------------------------------------
       containers:
         - name: main
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

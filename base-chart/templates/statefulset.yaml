@@ -25,6 +25,24 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: {{ .Values.service.port }}
+        # --- FIX: Cek Kesiapan Database ---
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - {{ .Values.postgresUser | default "postgres" }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - {{ .Values.postgresUser | default "postgres" }}
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        # -----------------------------------
         envFrom:
         - secretRef:
             name: secret-{{ include "base-chart.name" . }}
