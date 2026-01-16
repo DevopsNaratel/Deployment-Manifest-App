@@ -12,3 +12,4 @@ spec:
       name: http
   selector:
     app.kubernetes.io/id: {{ .Values.app.id | quote }}
+    app.kubernetes.io/name: {{ .Values.app.name | quote }}
