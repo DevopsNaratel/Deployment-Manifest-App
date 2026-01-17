@@ -8,7 +8,7 @@ app:
 
 image:
   repository: "devopsnaratel/diwa-app"
-  tag: "latest"
+  tag: "8"
 
 service:
   port: 80
