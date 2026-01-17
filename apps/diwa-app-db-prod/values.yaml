@@ -1,0 +1,19 @@
+namespace: prod
+controllerType: StatefulSet
+
+app:
+  id: "002"
+  name: "diwa-app-db"
+  env: "prod"
+
+image:
+  repository: "postgres"
+  tag: "15-alpine"
+
+service:
+  port: 5432
+  targetPort: 5432
+
+backup:
+  enabled: true
+  type: "postgres"

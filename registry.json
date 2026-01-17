@@ -5,5 +5,13 @@
     "image": "devopsnaratel/todo-app-php:build-3-bea2047-dev",
     "db": "postgres",
     "createdAt": "2026-01-17T03:44:53.570Z"
+  },
+  {
+    "id": "002",
+    "name": "diwa-app",
+    "image": "devopsnaratel/diwa-app:latest",
+    "db": "postgres",
+    "ingressHost": null,
+    "createdAt": "2026-01-17T06:35:59.663Z"
   }
 ]

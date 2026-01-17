@@ -1,0 +1,19 @@
+namespace: testing
+controllerType: Deployment
+
+app:
+  id: "002"
+  name: "diwa-app"
+  env: "testing"
+
+image:
+  repository: "devopsnaratel/diwa-app"
+  tag: "latest"
+
+service:
+  port: 80
+  targetPort: 3000
+
+backup:
+  enabled: true
+  type: "postgres"
